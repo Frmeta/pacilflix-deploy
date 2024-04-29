@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    h1 {
+        margin-top: 120px;
+    }
+
+    table, th, td {
+        border: 2px solid rgba(255,255,255,0.1);
+        border-collapse: collapse;
+        padding: 16px;
+    }
+
+    table, h1, h4 {
+        margin-left: 60px;
+    }
+
+    table {
+        align-items: center;
+        margin-top: 8px;
+        margin-right: 60px;
+        width: calc(100% - 120px);
+        border-radius: 10px;
+        padding: 0px;
+        /* overflow: hidden; */
+        background-color: #141414;
+    }
+
+    /* th:nth-child(1) {
+        border-radius: 10px 0 0 0;
+    }
+
+    th:nth-child(4) {
+        border-radius: 0 10px 0 0;
+    }
+
+    td:nth-child(1) {
+        border-radius: 0 0 0 10px;
+    }
+
+    td:nth-child(4) {
+        border-radius: 0 0 10px 0;
+    } */
+
+    th:first-child, td:first-child {
+        width: 36%;
+    }
+
+    th:nth-child(2), td:nth-child(2) {
+        width: 28%;
+    }
+
+    th:nth-child(3), td:nth-child(3) {
+        width: 16%;
+    }
+
+    th:last-child, td:last-child {
+        width: 20%;
+    }
+
+    .pemain {
+        margin-top: 32px;
+        margin-bottom: 40px;
+    }
+
+    .sutradara {
+        margin-bottom: 40px;
+    }
+
+    .penulis-skenario {
+        margin-bottom: 80px;
+    }
+</style>
+
+<h1>Kontributor Pachill</h1>
+
+<div class="pemain">
+    <h4>Pemain</h4>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nama</th>
+            <th>Jenis Kelamin</th>
+            <th>Kewarganegaraan</th>
+        </tr>
+        <tr>
+            <td>993b64a6-9f03-4e37-83d5-00e67c8d59cb</td>
+            <td>Greta Gerwig</td>
+            <td>F</td>
+            <td>USA</td>
+        </tr>
+        <tr>
+            <td>993b64a6-9f03-4e37-83d5-00e67c8d59cb</td>
+            <td>Greta Gerwig</td>
+            <td>F</td>
+            <td>USA</td>
+        </tr>
+    </table>
+</div>
+
+<div class="sutradara">
+    <h4>Sutradara</h4>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nama</th>
+            <th>Jenis Kelamin</th>
+            <th>Kewarganegaraan</th>
+        </tr>
+        <tr>
+            <td>4d5ec01e-b4d1-4c71-b477-dff38da0082e</td>
+            <td>Lucia Puenzo</td>
+            <td>F</td>
+            <td>Argentina</td>
+        </tr>
+    </table>
+</div>
+
+<div class="penulis-skenario">
+    <h4>Penulis Skenario</h4>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nama</th>
+            <th>Jenis Kelamin</th>
+            <th>Kewarganegaraan</th>
+        </tr>
+        <tr>
+            <td>2fc38f3c-46f7-452b-af31-15dc155d9f95</td>
+            <td>Kirill Serebrennikov</td>
+            <td>M</td>
+            <td>Rusia</td>
+        </tr>
+    </table>
+</div>
+
+{% endblock content %}
