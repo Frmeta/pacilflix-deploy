@@ -56,6 +56,10 @@
             margin-right: 0;
         }
 
+        .navbar-button:last-child {
+            margin-right: 0;
+        }
+
         .button-primary-red {
             display: inline-block;
             padding: 12px 20px;
@@ -116,10 +120,10 @@
         <div class="logo">
             <img src="https://i.ibb.co/px29Jfg/pacilflix-logo.png" alt="Logo" width="72" height="72"> 
         </div>
-        <button class="navbar-button">Home</button>
-        <button class="navbar-button">Favorites</button>
-        <button class="navbar-button">Downloads</button>
-        <button class="navbar-button">Subscription</button>
+        <button class="navbar-button" id="home-button">Home</button>
+        <button class="navbar-button" id="favorites-button">Favorites</button>
+        <button class="navbar-button" id="downloads-button">Downloads</button>
+        <button class="navbar-button" id="subscription-button">Subscription</button>
     </div>
 
     {% block content %}
