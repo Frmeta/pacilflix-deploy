@@ -64,19 +64,12 @@
 
     .pemain {
         margin-top: 32px;
-        margin-bottom: 40px;
-    }
-
-    .sutradara {
-        margin-bottom: 40px;
-    }
-
-    .penulis-skenario {
         margin-bottom: 80px;
     }
 
     .chips-container {
         text-align: center;
+        margin-top: 0;
     }
 
     .button-chips {
@@ -86,14 +79,19 @@
     .button-chips:last-child {
         margin-right: 0px;
     }
+
+    #pemain-chips {
+        background-color: red;
+        border: 1.5px solid #970007
+    }
 </style>
 
 <h1>Daftar Kontributor</h1>
 
 <div class="chips-container">
-    <a href="/kontributor_pemain/" class="button-chips">Pemain</a>
-    <a href="/kontributor_sutradara/" class="button-chips">Sutradara</a>
-    <a href="/kontributor_penulis_skenario/" class="button-chips">Penulis Skenario</a>
+    <a href="/kontributor/" class="button-chips" id="pemain-chips">Pemain</a>
+    <a href="/kontributor_sutradara/" class="button-chips" id="sutradara-chips">Sutradara</a>
+    <a href="/kontributor_penulis_skenario/" class="button-chips" id="penulis-chips">Penulis Skenario</a>
 </div>
 
 <div class="pemain">
@@ -113,48 +111,6 @@
             <td>Greta Gerwig</td>
             <td>F</td>
             <td>USA</td>
-        </tr>
-    </table>
-</div>
-
-<div class="sutradara">
-    <h4>Sutradara</h4>
-    <table>
-        <tr>
-            <th>Nama</th>
-            <th>Jenis Kelamin</th>
-            <th>Kewarganegaraan</th>
-        </tr>
-        <tr>
-            <td>Lucia Puenzo</td>
-            <td>F</td>
-            <td>Argentina</td>
-        </tr>
-        <tr>
-            <td>Lucia Puenzo</td>
-            <td>F</td>
-            <td>Argentina</td>
-        </tr>
-    </table>
-</div>
-
-<div class="penulis-skenario">
-    <h4>Penulis Skenario</h4>
-    <table>
-        <tr>
-            <th>Nama</th>
-            <th>Jenis Kelamin</th>
-            <th>Kewarganegaraan</th>
-        </tr>
-        <tr>
-            <td>Kirill Serebrennikov</td>
-            <td>M</td>
-            <td>Rusia</td>
-        </tr>
-        <tr>
-            <td>Kirill Serebrennikov</td>
-            <td>M</td>
-            <td>Rusia</td>
         </tr>
     </table>
 </div>
