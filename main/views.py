@@ -23,3 +23,16 @@ def hal_episode_page(request):
 
 def ulasan_page(request):
     return render(request, 'ulasan.html')
+
+
+
+
+# fredo
+def daftar_unduhan(request):
+    return render(request, 'daftar_unduhan.html')
+
+def daftar_favorit(request):
+    context = {
+        "data" : range(3)
+    }
+    return render(request, 'daftar_favorit.html', context)

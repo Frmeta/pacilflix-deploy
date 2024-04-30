@@ -10,4 +10,8 @@ urlpatterns = [
     path('series/', hal_series_page, name='hal_series_page'),
     path('episode/', hal_episode_page, name='hal_episode_page'),
     path('ulasan/', ulasan_page, name='ulasan_page'),
+
+    # fredo
+    path('daftar_unduhan/', daftar_unduhan, name='daftar_unduhan'),
+    path('daftar_favorit/', daftar_favorit, name='daftar_favorit'),
 ]
