@@ -3,9 +3,83 @@
 {% block content %}
 
 <style>
-    p {
-        align-items: center;
+    h1 {
+        margin-top: 120px;
+        margin-left: 80px;
+        margin-bottom: 28px;
+    }
+
+    .flex-container {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        margin-top: 0px;
+        margin-left: 80px;
+        width: calc(100% - 160px);
+    }
+
+    .flex-container > div {
+        flex: 1;
+        margin-right: 8px;
+    }
+
+    .flex-container > div:last-child {
+        margin-right: 0;
+    }
+
+    .container1, .container2, .container3 {
+        padding: 28px;
+        border: 1.5px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .container1 label, .container2 label, .container3 label {
+        display: block;
+        padding-left: 16px;
+    }
+
+    .button-container {
+        text-align: right;
+        margin-right: 80px;
+        margin-top: 28px;
     }
 </style>
 
+<h1>Ubah Paket Langganan</h1>
+
+<div class="flex-container">
+    <div class="container1">
+        <input type="radio" id="option1" name="option-paket" value="basic">
+        <label for="option1">
+            <b>Basic</b> <br><br>
+            Rp 50.000 <br><br>
+            HD <br><br>
+            Smartphone, tablet, laptop
+        </label><br>
+    </div>
+    <div class="container2">
+        <input type="radio" id="option2" name="option-paket" value="standard">
+        <label for="option2">
+            <b>Standard</b> <br><br>
+            Rp 100.000 <br><br>
+            Full HD <br><br>
+            Smartphone, tablet
+        </label><br>
+    </div>
+    <div class="container3">
+        <input type="radio" id="option3" name="option-paket" value="premium">
+        <label for="option3">
+            <b>Premium</b> <br><br>
+            Rp 150.000 <br><br>
+            Ultra HD <br><br>
+            Smartphone, tablet, laptop, Smart TV
+        </label><br>
+    </div>
+</div>
+
+<div class="button-container">
+    <a href="" class="button-primary-blue">Ubah Paket</a>
+</div>
 {% endblock content %}
