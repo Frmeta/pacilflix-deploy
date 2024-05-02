@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex items-center justify-center pb-24">
+    <div class="text-white rounded-xl w-3/4 m-2">
+        <h1 class="text-5xl text-center mt-9 mb-5">Daftar Favorit</h1>
+
+        <form>
+            <div class="w-full mb-4 rounded-xl flex flex-row justify-between">
+                <textarea id="comment" rows="1" class="shadow-lg rounded-lg px-3 py-2 mr-3 w-full px-0 text-normal text-gray-900 bg-white" placeholder="Search    " required ></textarea>
+                <button type="submit" class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-[#b91c1c] font-bold rounded-full transition-all hover:bg-[#7f1d1d]">
+                    Cari
+                </button>
+            </div>
+        </form>
+        
+        {% for i in data %}
+
+        <!-- New Smaller Title -->
+        <h2 class="text-3xl text-center mt-12 mb-3"> Daftar Favorit {{ i }} </h2>
+        
+
+        <div class="grid grid-cols-3 gap-y-0 mt-6">
+            <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Judul</p>
+            <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Waktu Ditambahkan</p>
+            <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Aksi</p>
+        </div>
+        <div class="grid grid-cols-3 gap-y-0">
+            
+            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">Madame Web</p>
+            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white text-justify">2022-03-01T12:34:56Z</p>
+            <div class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">
+                <button class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-red-500 font-bold rounded-full transition-all hover:bg-red-700">
+                    Hapus
+                </button>
+            </div>
+
+            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">Madame Web</p>
+            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white text-justify">2022-03-01T12:34:56Z</p>
+            <div class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">
+                <button class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-red-500 font-bold rounded-full transition-all hover:bg-red-700">
+                    Hapus
+                </button>
+            </div>
+
+            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">Madame Web</p>
+            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white text-justify">2022-03-01T12:34:56Z</p>
+            <div class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">
+                <button class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-red-500 font-bold rounded-full transition-all hover:bg-red-700">
+                    Hapus
+                </button>
+            </div>
+            
+            
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

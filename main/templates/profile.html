@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="flex items-center justify-center pb-24">
+  <div class="text-white rounded-xl w-3/4 m-2 mt-4">
+    <div
+      class="flex flex-row justify-end items-center">
+      <a href="/login"
+        class="inline-flex items-center justify-center w-20 h-10 text-medium font-normal text-center text-white bg-[#b91c1c] font-bold rounded-md transition-all hover:bg-[#7f1d1d]">
+        logout
+      </a>
+    </div>
+
+    <p
+      class="flex justify-center text-4xl mt-7 mb-2 w-full text-white font-bold leading-tight text-center">Profile
+      pengguna</p>
+
+    <form class="w-full mt-10 w-1/2">
+      <div
+        class="mt-6 rounded-xl flex flex-col gap-y-2 justify-center items-center">
+        <textarea id="comment" rows="1"
+          class="shadow-lg rounded-lg px-3 py-2 w-1/4 px-0 text-normal text-gray-900 bg-white"
+          placeholder="Username    " required></textarea>
+        <textarea id="comment" rows="1"
+          class="shadow-lg rounded-lg px-3 py-2 w-1/4 px-0 text-normal text-gray-900 bg-white"
+          placeholder="Password    " required></textarea>
+        <textarea id="comment" rows="1"
+          class="shadow-lg rounded-lg px-3 py-2 w-1/4 px-0 text-normal text-gray-900 bg-white"
+          placeholder="Negara Asal    " required></textarea>
+        <button type="submit"
+          class="inline-flex items-center mt-4 py-2 px-6 text-base font-normal text-center text-white bg-[#b91c1c] font-bold rounded-md transition-all hover:bg-[#7f1d1d]">
+          update profile
+        </button>
+      </div>
+    </form>
+
+  </div>
+</div>
+{% endblock content %}
