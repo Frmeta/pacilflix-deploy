@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+{% include 'navbar_guest.html' %}
 <section>
   <div class="overflow-hidden">
     <img
@@ -16,15 +16,6 @@
     <div class="flex items-center justify-center pb-24">
       <div class="relative text-white rounded-xl w-3/4 m-2 ">
 
-        <!-- navbar -->
-        <div
-          class="flex flex-row justify-between items-center">
-          <h1
-            class="text-5xl text-center mt-9 mb-5 text-[#b91c1c] font-bold">Pacilflix</h1>
-        </div>
-
-        <!-- end navbar -->
-
         <!-- content -->
 
         <div
@@ -32,24 +23,16 @@
 
           <form
             class="w-[45vh] h-[70vh] bg-[#1e2026] bg-gradient-to-r from-[#1e2026] to-[#000000] opacity-90 py-10 ">
-            <div
-              class="mt-6 rounded-xl flex flex-col gap-y-4 justify-center items-center">
+            <div class="mt-6 rounded-xl flex flex-col gap-y-4 justify-center items-center">
               <p class="place-self-start pl-16 text-3xl font-semibold">Login</p>
-              <textarea id="comment" rows="1"
-                class="shadow-lg rounded-lg px-3 py-2 w-2/3 mt-4 text-normal text-gray-900 bg-white"
-                placeholder="Username    " required></textarea>
-              <textarea id="comment" rows="1"
-                class="shadow-lg rounded-lg px-3 py-2 w-2/3 text-normal text-gray-900 bg-white"
-                placeholder="Password    " required></textarea>
-              <button type="submit"
-                class=" w-2/3 items-center mt-4 py-2 px-6 text-base font-normal text-center text-white bg-[#b91c1c] font-bold rounded-md transition-all hover:bg-[#7f1d1d]">
-                Login
+              <input type="text" id="username" class="shadow-lg rounded-lg px-3 py-2 w-2/3 mt-4 text-normal text-gray-900 bg-white" placeholder="Username" required>
+              <input type="password" id="password" class="shadow-lg rounded-lg px-3 py-2 w-2/3 text-normal text-gray-900 bg-white" placeholder="Password" required>
+              <button type="submit" class="w-2/3 items-center mt-4 py-2 px-6 text-base font-normal text-center text-white bg-[#b91c1c] font-bold rounded-md transition-all hover:bg-[#7f1d1d]">
+                  Login
               </button>
-              <p class="text-[#D8CCC9]">Pengguna baru? <span
-                  class="hover:underline underline-offset-3 text-white"><a
-                    href="/">daftar
-                    sekarang.</a></span></p>
-            </div>
+              <p class="text-[#D8CCC9]">Pengguna baru? <span class="hover:underline underline-offset-3 text-white"><a href="/">daftar sekarang.</a></span></p>
+          </div>
+          
           </form>
 
         </div>
