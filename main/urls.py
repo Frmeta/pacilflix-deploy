@@ -3,7 +3,7 @@ from main.views import *
 
 urlpatterns = [
     # vanya
-    path('', tayangan_guest, name='tayangan_guest_page'),
+    path('tayangan_guest/', tayangan_guest, name='tayangan_guest_page'),
     path('hasil_pencarian_guest/', hasil_pencarian_guest, name='hasil_pencarian_guest_page'),
     path('tayangan_aktif/', tayangan_aktif, name='tayangan_aktif_page'),
     path('hasil_pencarian_aktif/', hasil_pencarian_aktif, name='hasil_pencarian_aktif_page'),
