@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% block meta %}
+            <meta charset="UTF-8" />
+            <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1.0"/>
+        {% endblock meta %}
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+J4jsl5c9zdLKaUk5Ae5f5b1bw6AUn5f5v8FZJoMxm6f5cH1" crossorigin="anonymous"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+        <style>
+            body {
+                font-family: 'Montserrat', sans-serif;
+                background-color: #141414;  
+                color:#FFFFFF;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .navbar {
+                height: 80px;
+                width: 100%;
+                background-color: #010101;
+                display: flex;
+                align-items: center;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 1000;
+            }
+    
+            .logo {
+                padding-left: 60px;
+                padding-right: 28px;
+            }
+    
+            .navbar-button {
+                background-color: transparent;
+                border: none;
+                color: inherit;
+                padding: 0;
+                font: inherit;
+                cursor: pointer;
+                outline: none;
+            }
+    
+            .navbar-button { 
+                margin-right: 36px;
+                color: #FFFFFF;
+                background-color: transparent;
+                text-decoration: none;
+                font-size: 16px;
+            }
+    
+            .navbar-button:last-child {
+                margin-right: 0;
+            }
+    
+            .navbar-button:last-child {
+                margin-right: 0;
+            }
+    
+            .button-primary-red {
+                display: inline-block;
+                padding: 12px 20px;
+                font-size: 16px;
+                text-align: center;
+                text-decoration: none;
+                background-color: #b91c1c;
+                color: #ffffff;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+    
+            .button-primary-red:hover {
+                background-color: #7f1d1d;
+            }
+    
+            .button-primary-blue {
+                display: inline-block;
+                padding: 12px 20px;
+                font-size: 16px;
+                text-align: center;
+                text-decoration: none;
+                background-color: #0047FF;
+                color: #ffffff;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+    
+            .button-primary-blue:hover {
+                background-color: #0032B4;
+            }
+    
+            .button-secondary-grey {
+                display: inline-block;
+                padding: 12px 20px;
+                font-size: 16px;
+                text-align: center;
+                text-decoration: none;
+                background-color: #B8B8B8;
+                color: #ffffff;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+    
+            .button-secondary-grey:hover {
+                background-color: #6B6B6B;
+            }
+    
+            .logout-button {
+                margin-left: auto;
+                margin-right: 80px;
+            }
+    
+            .button-chips {
+                display: inline-block;
+                padding: 12px 20px;
+                font-size: 16px;
+                text-align: center;
+                text-decoration: none;
+                background-color: transparent;
+                color: #ffffff;
+                border: 1.5px solid #A6A6A6;
+                border-radius: 100px;
+                cursor: pointer;
+            }
+    
+            .button-chips:hover {
+                background-color: #434343;
+            }
+        </style>
+    
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    </head>
+    <body class="bg-[#09090b] h-screen font-[montserrat]">
+        {% block content %}
+        {% endblock content %}
+    </body>
+</html>

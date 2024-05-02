@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navbar_aktif.html' %}
+<style>
+    #subscription-button {
+        font-weight: bold;
+    }
+
+    h1 {
+        margin-top: 120px;
+        margin-left: 80px;
+        margin-bottom: 28px;
+        font-size: 32px;
+        font-weight: bold;
+    }
+
+    h4 {
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
+
+    .flex-container {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        margin-top: 0px;
+        margin-left: 80px;
+        margin-right: 80px;
+        width: calc(100% - 160px);
+    }
+
+    .flex-container > div {
+        flex: 1;
+        margin-right: 8px;
+    }
+
+    .flex-container > div:last-child {
+        margin-right: 0;
+    }
+
+    .container2, .container3 {
+        text-align: right;
+    }
+
+    .container1 {
+        height: 104px;
+        background-color: #282828;
+        border-radius: 10px;
+        padding-left: 28px;
+        padding-top: 24px;
+        padding-bottom: 24px;
+    }
+
+    b {
+        padding-bottom: 12px;
+    }
+
+    p {
+        padding-bottom: 28px;
+    }
+
+    .button-container {
+        margin-top: 28px;
+        margin-right: 80px;
+        display: flex;
+        flex-direction: row-reverse;
+    }
+
+    .button-container > div {
+        margin-left: 16px;
+    }
+
+    h2 {
+        margin-top: 72px;
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 12px;
+    }
+
+    th, td {
+        border: 1.5px solid rgba(255,255,255,0.1);
+        padding: 16px;
+    }
+
+    table, h1, h2{
+        margin-left: 80px;
+    }
+
+    table {
+        align-items: center;
+        margin-top: 0px;
+        margin-right: 80px;
+        margin-bottom: 80px;
+        width: calc(100% - 160px);
+        padding: 0px;
+        background-color: transparent;
+        border-spacing: 0;
+        border-collapse: separate;
+        text-align: center;
+    }
+
+    table tr:first-child th:first-child {
+    border-top-left-radius: 12px;
+    }
+
+    table tr:first-child th:last-child {
+    border-top-right-radius: 12px;
+    }
+
+    table tr:last-child td:first-child {
+    border-bottom-left-radius: 12px;
+    }
+
+    table tr:last-child td:last-child {
+    border-bottom-right-radius: 12px;
+    }
+
+    th:first-child, td:first-child {
+        width: 16%;
+    }
+
+    th:nth-child(2), td:nth-child(2) {
+        width: 16%;
+    }
+
+    th:nth-child(3), td:nth-child(3) {
+        width: 16%;
+    }
+
+    th:nth-child(4), td:nth-child(4) {
+        width: 16%;
+    }
+
+    th:nth-child(5), td:nth-child(5) {
+        width: 18%;
+    }
+
+    th:last-child, td:last-child {
+        width: 18%;
+    }
+
+</style>
+
+<h1>Langganan</h1>
+
+<div class="flex-container">
+    <div class="container1">
+        <b>Username</b>
+        <p>jenny98</p>
+    </div>
+    <div class="container2">
+        <b>Nama Paket</b>
+        <p>Basic</p>
+        <b>Dukungan Perangkat</b>
+        <p>Smartphone, tablet, laptop</p>
+        <b>Harga</b>
+        <p>Rp 50.000</p>
+        <b>Resolusi Layar</b>
+        <p>HD</p>
+    </div>
+    <div class="container3">
+        <b>Awal Penggunaan Paket</b>
+        <p>12/12/2021</p>
+        <b>Akhir Penggunaan Paket</b>
+        <p>12/01/2022</p>
+        <b>Metode Pembayaran</b>
+        <p>Transfer bank</p>
+        <b>Tanggal Pembayaran</b>
+        <p>12/10/2021</p>
+    </div>
+</div>
+
+<div class="button-container">
+    <div>
+        <a href="/update_langganan/" class="button-primary-blue">Ubah Paket</a>
+    </div>
+</div>
+
+<div>
+    <h2>Riwayat Transaksi</h2>
+    <table>
+        <tr>
+            <th>Nama Paket</th>
+            <th>Tanggal Dimulai</th>
+            <th>Tanggal Berakhir</th>
+            <th>Metode Pembayaran</th>
+            <th>Tanggal Pembayaran</th>
+            <th>Total Pembayaran</th>
+        </tr>
+        <tr>
+            <td>Basic</td>
+            <td>12/12/2021</td>
+            <td>12/01/2022</td>
+            <td>Transfer Bank</td>
+            <td>05-01-2024 14:23:01</td>
+            <td>Rp 50.000</td>
+        </tr>
+        <tr>
+            <td>Standard</td>
+            <td>4/1/2018</td>
+            <td>5/1/2018</td>
+            <td>E-wallet</td>
+            <td>09-03-2024 5:39:21</td>
+            <td>Rp 100.000</td>
+        </tr>
+    </table>
+</div>
+
+{% endblock content %}
