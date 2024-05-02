@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+{% include 'navbar_aktif.html' %}
 <style>
     h1 {
         margin-top: 120px;
         margin-left: 80px;
         margin-bottom: 28px;
+        font-size: 32px;
+        font-weight: bold;
     }
 
     h4, .dropdown {
@@ -15,6 +17,9 @@
 
     h4 {
         margin-top: 40px;
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 12px;
     }
 
     .flex-container {
@@ -65,7 +70,7 @@
         background-color: transparent;
         border: 1.5px solid #A6A6A6;
         border-radius: 4px;
-        width: 217px;
+        width: 220px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         z-index: 1;
     }
@@ -114,6 +119,10 @@
         position: relative;
         top: 13px;
         margin-left: 72px;
+    }
+
+    b {
+        padding-top: 0;
     }
 </style>
 
