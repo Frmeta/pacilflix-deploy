@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section>
+  <div class="overflow-hidden">
+    <img
+      class="absolute inset-0 h-full w-full object-cover"
+      src="https://assets.nflxext.com/ffe/siteui/vlv3/058eee37-6c24-403a-95bd-7d85d3260ae1/c9d61b69-0537-469e-9596-74e5f8d3f1c7/ID-en-20240422-POP_SIGNUP_TWO_WEEKS-perspective_WEB_705f4927-4856-4ccc-b8e7-ac91621eda12_small.jpg"
+      alt="hero bg image">
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-[#1e2026] to-[#000000] opacity-90"></div>
+  </div>
+
+  <div class="container mx-auto h-dvh">
+    <div class="flex items-center justify-center pb-24">
+      <div class="relative text-white rounded-xl w-3/4 m-2 ">
+
+        <!-- navbar -->
+        <div
+          class="flex flex-row justify-between items-center">
+          <h1
+            class="text-5xl text-center mt-9 mb-5 text-[#b91c1c] font-bold">Pacilflix</h1>
+          <a href="/login"
+            class="inline-flex items-center justify-center w-20 h-10 text-medium font-normal text-center text-white bg-[#b91c1c] font-bold rounded-md transition-all hover:bg-[#7f1d1d]">
+            login
+          </a>
+        </div>
+
+        <!-- end navbar -->
+
+        <!-- content -->
+
+        <div
+          class="grid w-full h-[70vh] gap-y-2 place-content-center text-center ">
+          <h1 class="text-8xl">PacilFlix - D4</h1>
+          <h2 class="text-4xl "> Tonton film dan series favorite kamu</h2>
+          <h3 class="text-lg "> Siap untuk menonton? Masukkan data diri Anda
+            untuk membuat akun</h3>
+
+          <form class="w-full">
+            <div
+              class="mt-6 rounded-xl flex flex-col gap-y-2 justify-center items-center">
+              <textarea id="comment" rows="1"
+                class="shadow-lg rounded-lg px-3 py-2 w-2/3 px-0 text-normal text-gray-900 bg-white"
+                placeholder="Username    " required></textarea>
+              <textarea id="comment" rows="1"
+                class="shadow-lg rounded-lg px-3 py-2 w-2/3 px-0 text-normal text-gray-900 bg-white"
+                placeholder="Password    " required></textarea>
+              <textarea id="comment" rows="1"
+                class="shadow-lg rounded-lg px-3 py-2 w-2/3 px-0 text-normal text-gray-900 bg-white"
+                placeholder="Negara Asal    " required></textarea>
+              <button type="submit"
+                class="inline-flex items-center mt-4 py-2 px-6 text-base font-normal text-center text-white bg-[#b91c1c] font-bold rounded-md transition-all hover:bg-[#7f1d1d]">
+                Daftar sekarang >
+              </button>
+            </div>
+          </form>
+
+        </div>
+
+        <!-- end content -->
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
