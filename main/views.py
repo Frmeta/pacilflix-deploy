@@ -35,11 +35,40 @@ def ulasan_page(request):
 
 # fredo
 def daftar_unduhan(request):
-    return render(request, "daftar_unduhan.html")
+    context = {}
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT judul, timestamp FROM tayangan_terunduh JOIN tayangan ON id_tayangan=id WHERE username = %s;", ["max_the_awesome"])
+        rows = cursor.fetchall()
+        print(rows)
+        context = {'rows' : rows}
+
+    return render(request, "daftar_unduhan.html", context)
 
 
 def daftar_favorit(request):
-    context = {"data": range(3)}
+    context = {}
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            select df.judul, df.timestamp, ARRAY_AGG(t.judul) as tayangan_list, ARRAY_AGG(tmdf.timestamp) as tayangan_timestamp_list
+            from tayangan t join tayangan_memiliki_daftar_favorit as tmdf on t.id=tmdf.id_tayangan
+            join daftar_favorit as df on tmdf.username=df.username and tmdf.timestamp=tmdf.timestamp
+            group by (df.username, df.timestamp)
+            having df.username=%s;""", ["max_the_awesome"])
+        rows = cursor.fetchall()
+        print(rows)
+
+        daftar_daftar_favorit = []
+        for row in rows:
+            part1 = row[0]
+            part2 = row[1]
+            part3 = []
+            for i in range(len(row[2])):
+                part3.append((row[2][i], row[3][i]))
+            daftar_favorit = (part1, part2, part3)
+            daftar_daftar_favorit.append(daftar_favorit)
+            print(daftar_favorit)
+            
+        context = {'daftar_daftar_favorit' : daftar_daftar_favorit}
     return render(request, "daftar_favorit.html", context)
 
 
