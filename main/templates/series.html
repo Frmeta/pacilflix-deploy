@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navbar_aktif.html' %}
+
+<style>
+    #films-and-shows-button {
+        font-weight: bold;
+    }
+</style>
+
+<div class="flex items-center justify-center pb-24">
+    <div class="text-white rounded-xl w-3/4 m-2">
+    {% for row in daftar %}
+        <p class="flex justify-center text-4xl mt-24 mb-5 w-full text-white font-bold leading-tight text-center">{{ row.title }}</p>
+
+        {% if episode_list %}
+        <ul class="flex gap-2 flex-col">
+            <p class="mt-5 font-bold text-lg mb-1">Episode</p>
+            <div class="flex gap-2 ">
+                {% for episode in episode_list %}
+                        <li class="border-2 border-[#b91c1c] text-white font-bold rounded-full transition-all hover:cursor-pointer hover:bg-[#b91c1c] mb-2 px-5 py-2">{{ episode }}</a></li>
+                {% endfor %}
+            </div>
+        </ul>
+        {% endif %}
+
+        <div class="flex justify-center w-full mt-2">
+            <button onclick="openUnduhModal()" class="px-4 py-2 mr-2 bg-[#b91c1c] text-white font-bold rounded-full transition-all hover:bg-[#7f1d1d]">Download</button>
+            <button onclick="openFavoritModal()" class="px-4 py-2 bg-[#b91c1c] text-white font-bold rounded-full transition-all hover:bg-[#7f1d1d]">Add to Favorites</button>
+        </div>  
+        
+        {% include "modal.html" %}
+        
+        <div class="flex md:flex-row flex-col justify-around mt-2">
+            <div class="md:w-3/4 w-full md:mr-7">
+                <p class="mt-5 font-bold text-lg mb-1">Total View</p>
+                <p class="font-extralight">{{ row.total_view }}</p>
+                <p class="mt-5 font-bold text-lg mb-1">Average Rating</p>
+                <p class="font-extralight">{{ row.avg_rating }}</p>
+                <p class="mt-5 font-bold text-lg mb-1">Synopsis</p>
+                <p class="font-extralight text-justify">{{ row.sinopsis }}</p>
+                <p class="mt-5 font-bold text-lg mb-1">Genres</p>
+                {% if genre_list %}
+                    <ul class="font-extralight">
+                        {% for genre in genre_list %}
+                            <li>{{ genre }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <a class="font-extralight">-</a>
+                {% endif %}
+            </div>
+            <div class="md:w-1/4 w-full md:ml-7">
+                <p class="mt-5 font-bold text-lg mb-1">Country</p>
+                    <p class="font-extralight">Amerika</p>
+                    <p class="mt-5 font-bold text-lg mb-1">Cast</p>
+                    {% if pemain_list %}
+                        <ul class="font-extralight">
+                            {% for pemain in pemain_list %}
+                                <li>{{ pemain }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="font-extralight">-</p>
+                    {% endif %}
+                    <p class="mt-5 font-bold text-lg mb-1">Script Writer</p>
+                    {% if penulis_skenario_list %}
+                        <ul class="font-extralight">
+                            {% for penulis in penulis_skenario_list %}
+                                <li>{{ penulis }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <a class="font-extralight">-</a>
+                    {% endif %}
+                    <p class="mt-5 font-bold text-lg mb-1">Director</p>
+                    <p class="font-extralight">{{ row.sutradara}}</p>
+            </div>
+        </div>
+    {% endfor %}
+    {% include 'ulasan.html' with data=daftar2 %}
+    </div>
+</div>
+{% endblock content %}

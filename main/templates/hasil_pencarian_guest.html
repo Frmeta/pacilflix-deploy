@@ -2,41 +2,44 @@
 
 {% block content %}
 {% include 'navbar_guest.html' %}
+
+<style>
+    #films-and-shows-button {
+        font-weight: bold;
+    }
+</style>
+
 <div class="flex items-center justify-center pb-24">
     <div class="text-white rounded-xl w-3/4 m-2">
-        <p class="flex justify-center text-4xl mt-24 mb-5 w-full text-white font-bold leading-tight text-center">Films and Shows</p>
+        <p class="flex justify-center text-4xl mt-24 mb-5 w-full text-white font-bold leading-tight text-center">Films & Shows</p>
 
-        <form>
+        <form method="post" action="{% url 'hasil_pencarian_guest_page' %}">
+            {% csrf_token %}
             <div class="w-full mb-4 rounded-xl flex flex-row justify-between">
-                <textarea id="comment" rows="1" class="shadow-lg rounded-lg px-3 py-2 mr-3 w-full px-0 text-normal text-gray-900 bg-white" placeholder="Search    " required ></textarea>
+                <textarea id="search" name="search" rows="1" class="shadow-lg rounded-lg px-3 py-2 mr-3 w-full px-0 text-normal text-gray-900 bg-white" placeholder="Search" required></textarea>
                 <button type="submit" class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-[#b91c1c] font-bold rounded-full transition-all hover:bg-[#7f1d1d]">
                     Search
                 </button>
             </div>
         </form>
-    
-        <div class="grid grid-cols-4 gap-y-0 mt-6">
-            <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Title</p>
-            <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Trailer Synopsis</p>
-            <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Trailer URL</p>
-            <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Trailer Release Date</p>
-        </div>
-        <div class="grid grid-cols-4 gap-y-0">
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">Madame Web</p>
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white text-justify">Masa tiebipe gitera hirecut pir siraler nepepu. Gole cor nu ropop igomi sejanie nieneten tocilic. Ise kiro iece miselot imiconol cobe.</p>
-            <a href="https://youtube.com/watch?v=PYCc0-FSuG0" class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white break-all">youtube.com/watch?v=PYCc0-FSuG0</a>
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">13/10/2024</p>
-
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">Madame Web</p>
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white text-justify">Masa tiebipe gitera hirecut pir siraler nepepu. Gole cor nu ropop igomi sejanie nieneten tocilic. Ise kiro iece miselot imiconol cobe.</p>
-            <a href="https://youtube.com/watch?v=PYCc0-FSuG0" class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white break-all">youtube.com/watch?v=PYCc0-FSuG0</a>
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">13/10/2024</p>
-
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">Madame Web</p>
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white text-justify">Masa tiebipe gitera hirecut pir siraler nepepu. Gole cor nu ropop igomi sejanie nieneten tocilic. Ise kiro iece miselot imiconol cobe.</p>
-            <a href="https://youtube.com/watch?v=PYCc0-FSuG0" class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white break-all">youtube.com/watch?v=PYCc0-FSuG0</a>
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">13/10/2024</p>
-        </div>
+        {% if daftar %}
+            <div class="grid grid-cols-4 gap-y-0 mt-6">
+                <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Title</p>
+                <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Trailer Synopsis</p>
+                <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Trailer URL</p>
+                <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Trailer Release Date</p>
+            </div>
+            <div class="grid grid-cols-4 gap-y-0">
+                {% for row in daftar %}
+                    <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">{{ row.title }}</p>
+                    <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white text-justify">{{ row.sinopsis }}</p>
+                    <a href="https://www.youtube.com/watch?v={{ row.hrefurl }}" target="_blank" class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white break-all text-[#7dd3fc]">https://www.youtube.com/watch?v={{ row.hrefurl }}</a>
+                    <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">{{ row.release_date }}</p>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="flex justify-center mt-24 mb-5 w-full text-white font-semibold leading-tight text-center">No results found.</p>
+        {% endif %}
     </div>
 </div>
 {% endblock content %}

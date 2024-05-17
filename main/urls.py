@@ -7,9 +7,9 @@ urlpatterns = [
     path('hasil_pencarian_guest/', hasil_pencarian_guest, name='hasil_pencarian_guest_page'),
     path('tayangan_aktif/', tayangan_aktif, name='tayangan_aktif_page'),
     path('hasil_pencarian_aktif/', hasil_pencarian_aktif, name='hasil_pencarian_aktif_page'),
-    path('film/', hal_film_page, name='hal_film_page'),
-    path('series/', hal_series_page, name='hal_series_page'),
-    path('episode/', hal_episode_page, name='hal_episode_page'),
+    path('detail/<str:title>/', detail_page, name='detail_page'),
+    path('episode/<str:title>/', episode_page, name='episode_page'),
+    path('episode/', hal_episode_page, name='episode_page'),
 
     # fredo
     path('daftar_unduhan/', daftar_unduhan, name='daftar_unduhan'),

@@ -2,10 +2,26 @@
 
 {% block content %}
 {% include 'navbar_aktif.html' %}
+
+<style>
+    #films-and-shows-button {
+        font-weight: bold;
+    }
+</style>
+
 <div class="flex items-center justify-center pb-24">
     <div class="text-white rounded-xl w-3/4 m-2">
+        
         <p class="flex justify-center text-4xl mt-24 mb-2 w-full text-white font-bold leading-tight text-center">Godzilla x Kong: The New Empire</p>
         <p class="flex justify-center text-2xl mb-5 w-full text-white leading-tight text-center">Introduction</p>
+        <div class="flex items-center w-full justify-center mb-5 flex-col">
+            <label for="rating" class="font-semibold mr-2">Watch Progress :</label>
+            <div class="w-full flex justify-center items-center">
+                <input type="range" id="progress" name="progress" min="1.0" max="100.0" step="1" class="h-3 w-4/6 rounded-md" />
+                <span id="progress-value" class="ml-2 text-white">5.0</span>
+                <p>%</p>
+            </div>
+        </div>
         <div class="flex justify-center w-full">
             <button class="px-4 py-2 mr-2 mb-3 bg-[#b91c1c] text-white font-bold rounded-full transition-all hover:bg-[#7f1d1d]">Watch</button>
         </div>  
@@ -27,4 +43,17 @@
         </div>
     </div>
 </div>
+
+<script>
+    const slider = document.getElementById("progress");
+    const output = document.getElementById("progress-value");
+    output.textContent = slider.value;
+
+    slider.oninput = function() {
+        const tmp = this.value
+        console.log(tmp)
+        output.textContent = this.value;
+    }
+</script>
+
 {% endblock content %}
