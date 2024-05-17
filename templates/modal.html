@@ -70,8 +70,19 @@
 
         <script>
     
-            function openUnduhModal() {
+            function openUnduhModal(tayangan_id) {
                 document.getElementById('unduhModal').style.display = 'block';
+
+                // $.ajax({
+                //     url: "{% url 'unduh'}",
+                //     data: {
+                //         id : tayangan_id
+                //     },
+                //     success: function( result ) {
+                //         console.log()
+                //         $( "#weather-temp" ).html( "<strong>" + result + "</strong> degrees" );
+                //     }
+                // });
             }
             
             function closeUnduhModal() {
