@@ -22,9 +22,11 @@
                 <p>%</p>
             </div>
         </div>
-        <div class="flex justify-center w-full">
-            <button class="px-4 py-2 mr-2 mt-2 bg-[#b91c1c] text-white font-bold rounded-full hover:bg-[#7f1d1d]" onclick="submitWatch('{{ row.id }}')">Watch</button>
-        </div>  
+        {% if row.url != "unreleased" %}
+            <div class="flex justify-center w-full">
+                <button class="px-4 py-2 mr-2 mt-2 bg-[#b91c1c] text-white font-bold rounded-full hover:bg-[#7f1d1d]" onclick="submitWatch('{{ row.id }}')">Watch</button>
+            </div>  
+        {% endif %}
         
         {% if episode_list %}
         <p class="mt-5 font-bold text-lg mb-2">Other episodes</p>
@@ -41,8 +43,12 @@
             <p class="mt-5 font-bold text-lg mb-1">Duration</p>
             <a class="font-extralight">{{ row.durasi }}</a>
             <a class="font-extralight">mins</a>
-            <p class="mt-5 font-bold text-lg mb-1">{{ row.urk }}</p>
-            <a class="font-extralight" href="https://youtube.com/watch?v=PYCc0-FSuG0">youtube.com/watch?v=PYCc0-FSuG0</a>
+            <p class="mt-5 font-bold text-lg mb-1">Episode URL</p>
+            {% if row.url != "unreleased" %}
+                <a class="font-extralight" href="https://www.youtube.com/watch?v={{ row.url }}" target="_blank">https://www.youtube.com/watch?v={{ row.url }}</a>
+            {% else %}    
+                <a class="font-extralight">Episode is not released yet</a>
+            {% endif %}
             <p class="mt-5 font-bold text-lg mb-1">Release Date</p>
             <p class="font-extralight">{{ row.release_date }}</p>
         </div>
@@ -56,8 +62,6 @@
     output.textContent = slider.value;
     
     slider.oninput = function() {
-        const tmp = this.value
-        console.log(tmp)
         output.textContent = this.value;
     }
 
@@ -74,7 +78,7 @@
                     if (response.ok) {
                         location.reload()
                     } else {
-                        alert("View doesn't countttt");
+                        alert("View doesn't count");
                     }
                 }).catch(error => {
                     alert('Failed to submit watch');

@@ -1,18 +1,18 @@
 <p class="flex justify-center text-2xl mt-7 mb-4 w-full text-white font-semibold leading-tight text-center">Review</p>
-        
+
 <form>
     <div class="w-full mb-4 border border-gray-500 rounded-xl">
         <div class="px-3 py-2 rounded-t-lg">
-            <textarea id="comment" rows="4" class="shadow-lg bg-[#09090b] rounded-lg px-3 py-2 w-full px-0 text-normal text-white" placeholder="Write your review here..." required></textarea>
+            <textarea id="deskripsi" rows="4" class="shadow-lg bg-[#09090b] rounded-lg px-3 py-2 w-full px-0 text-normal text-white" placeholder="Write your review here..." required></textarea>
         </div>
         <div class="flex items-center justify-between px-3 py-2 border-t">
             <div class="flex items-center">
                 <label for="rating" class="font-semibold mr-2">Rating :</label>
-                <input type="range" id="rating" name="rating" min="1.0" max="10.0" step="0.1" class="h-3 w-48 rounded-md" />
+                <input type="range" id="rating" name="rating" min="0" max="10" step="1" class="h-3 w-48 rounded-md" />
                 <span id="rating-value" class="ml-2 text-white">5.0</span>
                 <p>⭐</p>
             </div>
-            <button type="submit" class="inline-flex items-center py-1.5 px-4 text-medium font-normal text-center text-white bg-[#b91c1c] font-bold rounded-full transition-all hover:bg-[#7f1d1d]">
+            <button type="submit" class="inline-flex items-center py-1.5 px-4 text-medium font-normal text-center text-white bg-[#b91c1c] font-bold rounded-full transition-all hover:bg-[#7f1d1d]" onclick="submitReview('{{ id }}')">
                 Post
             </button>
         </div>
@@ -47,5 +47,32 @@
 
     slider.oninput = function() {
         output.textContent = this.value;
+    }
+
+    function submitReview(id) {
+        var url_target = '/review/' + id + '/';
+        const deskripsi = document.getElementById('deskripsi').value
+        const rating = document.getElementById('rating').value
+        const data = {
+            deskripsi: deskripsi,
+            rating: rating,
+            id: id
+        };
+
+        fetch(url_target, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                // alert('Review submitted successfully!');
+                location.reload();
+            } else {
+                // alert('Failed to submit review.');
+            }
+        })
     }
 </script>

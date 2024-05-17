@@ -49,7 +49,7 @@
                     {% if row.url_video_film != "unreleased" %}
                         <a class="font-extralight" href="https://www.youtube.com/watch?v={{ row.url_video_film }}" target="_blank">https://www.youtube.com/watch?v={{ row.url_video_film }}</a>
                     {% else %}    
-                    <a class="font-extralight" href="https://www.youtube.com/watch?v={{ row.url_video_film }}" target="_blank">Film is not released yet</a>
+                    <a class="font-extralight">Film is not released yet</a>
                     {% endif %}
                     <p class="mt-5 font-bold text-lg mb-1">Genres</p>
                     {% if genre_list %}
@@ -90,7 +90,7 @@
                 </div>
             </div>
         {% endfor %}
-        {% include 'ulasan.html' with data=daftar2 %}
+        {% include 'ulasan.html' with data=daftar2 id=id %}
     </div>
 </div>
 
@@ -100,8 +100,6 @@
     outputFilm.textContent = sliderFilm.value;
 
     sliderFilm.oninput = function() {
-        const tmp = this.value
-        console.log(tmp)
         outputFilm.textContent = this.value;
     }
 
@@ -118,7 +116,7 @@
                     if (response.ok) {
                         location.reload()
                     } else {
-                        alert("View doesn't countttt");
+                        alert("View doesn't count");
                     }
                 }).catch(error => {
                     alert('Failed to submit watch');

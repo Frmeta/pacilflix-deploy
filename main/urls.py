@@ -10,6 +10,7 @@ urlpatterns = [
     path('detail/<str:title>/', detail_page, name='detail_page'),
     path('episode/<str:title>/', episode_page, name='episode_page'),
     path('watch/<str:id>/', watch, name='watch'),
+    path('review/<str:id>/', review, name='review'),
 
     # fredo
     path('daftar_unduhan/', daftar_unduhan, name='daftar_unduhan'),

@@ -399,7 +399,8 @@ def detail_page(request, title):
                 'daftar2' : list_ulasan,
                 'pemain_list' : pemain_list,
                 'penulis_skenario_list' : penulis_skenario_list,
-                'genre_list' : genre_list
+                'genre_list' : genre_list,
+                'id' : tayangan_id
             })
     else: # JIKA TAYANGAN ADALAH SERIES
         with connection.cursor() as cursor:
@@ -520,7 +521,8 @@ def detail_page(request, title):
                 'pemain_list': pemain_list,
                 'penulis_skenario_list' : penulis_skenario_list,
                 'genre_list' : genre_list,
-                'episode_list' : episode_list
+                'episode_list' : episode_list,
+                'id' : tayangan_id
             })
         
 def episode_page(request, title):
@@ -554,12 +556,16 @@ def episode_page(request, title):
     for row in data:
         if row[6] is not None:
             episodes = row[6].split(", ")
+        if row[4] != "unreleased":
+            url_video = row[4].split("=")[1]
+        else:
+            url_video = row[4]
         episode_list.append({
             'title': row[0],
             'sub_judul': row[1],
             'sinopsis': row[2],
             'durasi': row[3],
-            'url': row[4],
+            'url': url_video,
             'release_date': row[5],
             'id' : row[7]
         })
@@ -587,6 +593,22 @@ def watch(request, id):
                 VALUES (%s, %s, NOW(), NOW())
             """, [id, username])
         return JsonResponse({'status': 'success'})
+
+def review(request, id):
+    username = request.user.username
+    if not username:
+        username = 'jenny98' # dummy username
+    if request.method == 'POST':
+        with connection.cursor() as cursor:
+            data = json.loads(request.body)
+            id = data.get('id')
+            rating = int(data.get('rating'))
+            deskripsi = data.get('deskripsi')
+            cursor.execute("""
+                INSERT INTO ULASAN (id_tayangan, username, timestamp, rating, deskripsi)
+                VALUES (%s, %s, NOW(), %s, %s)
+            """, [id, username, rating, deskripsi])
+            return JsonResponse({'status': 'success'})
 
 # fredo
 def daftar_unduhan(request):
