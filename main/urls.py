@@ -9,7 +9,7 @@ urlpatterns = [
     path('hasil_pencarian_aktif/', hasil_pencarian_aktif, name='hasil_pencarian_aktif_page'),
     path('detail/<str:title>/', detail_page, name='detail_page'),
     path('episode/<str:title>/', episode_page, name='episode_page'),
-    path('episode/', hal_episode_page, name='episode_page'),
+    path('episode/', hal_episode_page, name='hal_episode_page'),
 
     # fredo
     path('daftar_unduhan/', daftar_unduhan, name='daftar_unduhan'),

@@ -11,36 +11,42 @@
 
 <div class="flex items-center justify-center pb-24">
     <div class="text-white rounded-xl w-3/4 m-2">
-        
-        <p class="flex justify-center text-4xl mt-24 mb-2 w-full text-white font-bold leading-tight text-center">Godzilla x Kong: The New Empire</p>
-        <p class="flex justify-center text-2xl mb-5 w-full text-white leading-tight text-center">Introduction</p>
+        {% for row in daftar %}
+        <p class="flex justify-center text-4xl mt-24 mb-2 w-full text-white font-bold leading-tight text-center">{{row.title}}</p>
+        <p class="flex justify-center text-2xl mb-5 w-full text-white leading-tight text-center">{{ row.sub_judul }}</p>
         <div class="flex items-center w-full justify-center mb-5 flex-col">
             <label for="rating" class="font-semibold mr-2">Watch Progress :</label>
             <div class="w-full flex justify-center items-center">
                 <input type="range" id="progress" name="progress" min="1.0" max="100.0" step="1" class="h-3 w-4/6 rounded-md" />
-                <span id="progress-value" class="ml-2 text-white">5.0</span>
+                <span id="progress-value" class="ml-2 text-white">50</span>
                 <p>%</p>
             </div>
         </div>
         <div class="flex justify-center w-full">
             <button class="px-4 py-2 mr-2 mb-3 bg-[#b91c1c] text-white font-bold rounded-full transition-all hover:bg-[#7f1d1d]">Watch</button>
         </div>  
+        
+        {% if episode_list %}
+        <p class="mt-5 font-bold text-lg mb-2">Other episodes</p>
         <ul class="flex gap-2">
-            <li class="border-2 border-[#b91c1c] text-white font-bold rounded-full transition-all hover:cursor-pointer hover:bg-[#b91c1c] mb-2 px-5 py-2">Episode 1</a></li>
-            <li class="border-2 border-[#b91c1c] text-white font-bold rounded-full transition-all hover:cursor-pointer hover:bg-[#b91c1c] mb-2 px-5 py-2">Episode 2</a></li>
+            {% for episode in episode_list %}
+            <a href="{% url 'episode_page' episode %}" class="border-2 border-[#b91c1c] text-white font-bold rounded-full  transition-all hover:cursor-pointer hover:bg-[#b91c1c] mb-2 px-5 py-2">{{ episode }}</a>
+            {% endfor %}
         </ul>
-    
+        {% endif %}
+        
         <div class="w-full mr-7">
             <p class="mt-5 font-bold text-lg mb-1">Synopsis</p>
-            <p class="font-extralight text-justify">Idaliela otemu rowazet, rava la pucahes nolucie utalise li cudey! Ilomi ipew semoh te leh lupag ice mere ledomi tu. Lelap ne rehur, eneregu ieme pamevu ufacec ket; nixien catata dutug ril aqa eda. Daba olati seriner areliy cutete yicepel etemeta, di sutisie mies lelani ce. Sumonin ieteter bumas keninit niwose. Te rolirih tiw danaren cetofus uyipe. Delafu soy exa adetib oginirel lirol oto elinig; cub la budon ida emo re.</p>
+            <p class="font-extralight text-justify">{{ row.sinopsis }}</p>
             <p class="mt-5 font-bold text-lg mb-1">Duration</p>
-            <a class="font-extralight">127</a>
+            <a class="font-extralight">{{ row.durasi }}</a>
             <a class="font-extralight">mins</a>
-            <p class="mt-5 font-bold text-lg mb-1">Film URL</p>
+            <p class="mt-5 font-bold text-lg mb-1">{{ row.urk }}</p>
             <a class="font-extralight" href="https://youtube.com/watch?v=PYCc0-FSuG0">youtube.com/watch?v=PYCc0-FSuG0</a>
             <p class="mt-5 font-bold text-lg mb-1">Release Date</p>
-            <p class="font-extralight">11/10/2024</p>
+            <p class="font-extralight">{{ row.release_date }}</p>
         </div>
+        {% endfor %}
     </div>
 </div>
 
@@ -48,7 +54,7 @@
     const slider = document.getElementById("progress");
     const output = document.getElementById("progress-value");
     output.textContent = slider.value;
-
+    
     slider.oninput = function() {
         const tmp = this.value
         console.log(tmp)

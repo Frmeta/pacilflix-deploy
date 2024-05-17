@@ -477,7 +477,7 @@ def detail_page(request, title):
                     'avg_rating' : avg_rating,
                     'sinopsis' : row[3],
                     'asal_negara' : row[5],
-                    'sutradara' : row[8],
+                    'sutradara' : row[8]
                 })
 
              # fetch ulasan
@@ -519,7 +519,51 @@ def detail_page(request, title):
             })
         
 def episode_page(request, title):
-    return render(request, "episode.html")
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT
+                t.judul,
+                e.sub_judul,
+                e.sinopsis,
+                e.durasi,
+                e.url_video,
+                e.release_date,
+                (
+                    SELECT STRING_AGG(DISTINCT e.sub_judul, ', ')
+                    FROM SERIES s
+                    JOIN EPISODE e ON s.id_tayangan = e.id_series
+                    WHERE s.id_tayangan = t.id
+                ) AS episodes
+            FROM
+                EPISODE e
+            JOIN
+                SERIES s ON s.id_tayangan = e.id_series
+            JOIN
+                TAYANGAN t ON t.id = s.id_tayangan
+            WHERE
+                e.sub_judul = %s
+        """, [title])
+        data = cursor.fetchall()
+    episode_list = []
+    for row in data:
+        if row[6] is not None:
+            episodes = row[6].split(", ")
+        episode_list.append({
+            'title': row[0],
+            'sub_judul': row[1],
+            'sinopsis': row[2],
+            'durasi': row[3],
+            'url': row[4],
+            'release_date': row[5]
+        })
+
+    episodes.remove(title)
+    context = {
+        'daftar': episode_list,
+        'episode_list' : episodes
+    }
+    return render(request, 'episode.html', context)
+
 
 def hal_episode_page(request):
     return render(request, "episode.html")
