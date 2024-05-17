@@ -142,7 +142,8 @@ def tayangan_aktif(request):
                 t.sinopsis_trailer,
                 t.url_video_trailer,
                 t.release_date_trailer,
-                COUNT(rn.username) AS total_views
+                COUNT(rn.username) AS total_views,
+                t.id
             FROM 
                 RIWAYAT_NONTON rn
             JOIN 
@@ -154,7 +155,8 @@ def tayangan_aktif(request):
                 t.judul, 
                 t.sinopsis_trailer, 
                 t.url_video_trailer, 
-                t.release_date_trailer
+                t.release_date_trailer,
+                t.id
             ORDER BY 
                 total_views DESC
             LIMIT 10;
@@ -172,6 +174,7 @@ def tayangan_aktif(request):
                 'hrefurl' : hrefurl,
                 'release_date' : row[3],
                 'total_views' : row[4],
+                'id' : row[5]
             })
 
         # TOP 10 FILM
@@ -180,7 +183,8 @@ def tayangan_aktif(request):
                 t.judul,
                 t.sinopsis_trailer,
                 t.url_video_trailer,
-                t.release_date_trailer
+                t.release_date_trailer,
+                t.id
             FROM
                 FILM f
             JOIN
@@ -195,6 +199,7 @@ def tayangan_aktif(request):
                 'sinopsis' : row[1],
                 'hrefurl' : hrefurl,
                 'release_date' : row[3],
+                'id' : row[4]
             })
 
         # TOP 10 SERIES
@@ -203,7 +208,8 @@ def tayangan_aktif(request):
             t.judul,
             t.sinopsis_trailer,
             t.url_video_trailer,
-            t.release_date_trailer
+            t.release_date_trailer,
+            t.id
         FROM
             SERIES s
         JOIN
@@ -218,6 +224,7 @@ def tayangan_aktif(request):
                 'sinopsis' : row[1],
                 'hrefurl' : hrefurl,
                 'release_date' : row[3],
+                'id' : row[4]
             })
 
         # RETURN SEMUA DATA
@@ -236,7 +243,8 @@ def hasil_pencarian_aktif(request):
                     t.judul,
                     t.sinopsis_trailer,
                     t.url_video_trailer,
-                    t.release_date_trailer
+                    t.release_date_trailer,
+                    t.id
                 FROM
                     TAYANGAN t
                 WHERE
@@ -251,6 +259,7 @@ def hasil_pencarian_aktif(request):
                     'sinopsis' : row[1],
                     'hrefurl' : hrefurl,
                     'release_date' : row[3],
+                    'id' : row[4]
                 })
 
             return render(request, "hasil_pencarian_aktif.html", {
@@ -259,25 +268,16 @@ def hasil_pencarian_aktif(request):
         else:
             return render(request, "hasil_pencarian_aktif.html")
 
-def detail_page(request, title):
+def detail_page(request, id):
     is_film = False
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT *
-            FROM FILM f
-            JOIN TAYANGAN t ON t.id = f.id_tayangan
-            WHERE t.judul ILIKE %s;
-        """, ['%' + title + '%'])
+            FROM film
+            WHERE id_tayangan = %s
+        """, [id])
         if cursor.rowcount > 0:
             is_film = True
-        cursor.execute("""
-            SELECT t.id
-            FROM TAYANGAN t
-            WHERE t.judul ILIKE %s;
-        """, ['%' + title + '%'])
-        row = cursor.fetchone()
-        if row:
-            tayangan_id = str(row[0])
     # JIKA TAYANGAN ADALAH FILM
     if is_film:
         with connection.cursor() as cursor:
@@ -332,7 +332,7 @@ def detail_page(request, title):
                 WHERE
                     t.id = %s
                 LIMIT 1;
-            """, [tayangan_id])
+            """, [id])
             data = cursor.fetchall()
             list_hasil_pencarian = []  
             genre_list = []
@@ -362,7 +362,7 @@ def detail_page(request, title):
                     'url_video_film' : url_video,
                     'asal_negara' : row[8],
                     'sutradara' : row[11],
-                    'id' : tayangan_id
+                    'id' : id
                 })
 
             # fetch ulasan
@@ -380,7 +380,7 @@ def detail_page(request, title):
                     t.id = %s
                 ORDER BY
                     u.timestamp DESC
-            """, [tayangan_id])
+            """, [id])
             data = cursor.fetchall()
             list_ulasan = []
             for row in data:
@@ -400,7 +400,7 @@ def detail_page(request, title):
                 'pemain_list' : pemain_list,
                 'penulis_skenario_list' : penulis_skenario_list,
                 'genre_list' : genre_list,
-                'id' : tayangan_id
+                'id' : id
             })
     else: # JIKA TAYANGAN ADALAH SERIES
         with connection.cursor() as cursor:
@@ -458,7 +458,7 @@ def detail_page(request, title):
                 WHERE
                     t.id = %s
                 LIMIT 1;
-            """, [tayangan_id])
+            """, [id])
             data = cursor.fetchall()
             list_hasil_pencarian = []
             for row in data:
@@ -501,7 +501,7 @@ def detail_page(request, title):
                     t.id = %s
                 ORDER BY
                     u.timestamp DESC
-            """, [tayangan_id])
+            """, [id])
             data = cursor.fetchall()
             list_ulasan = []
             for row in data:
@@ -522,7 +522,7 @@ def detail_page(request, title):
                 'penulis_skenario_list' : penulis_skenario_list,
                 'genre_list' : genre_list,
                 'episode_list' : episode_list,
-                'id' : tayangan_id
+                'id' : id
             })
         
 def episode_page(request, title):
