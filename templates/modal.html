@@ -71,18 +71,22 @@
         <script>
     
             function openUnduhModal(tayangan_id) {
-                document.getElementById('unduhModal').style.display = 'block';
+                console.log("tayangan id " + tayangan_id + " akan diunduh")
 
-                // $.ajax({
-                //     url: "{% url 'unduh'}",
-                //     data: {
-                //         id : tayangan_id
-                //     },
-                //     success: function( result ) {
-                //         console.log()
-                //         $( "#weather-temp" ).html( "<strong>" + result + "</strong> degrees" );
-                //     }
-                // });
+                $.ajax({
+                    method: "POST",
+                    url: "{% url 'unduh' %}",
+                    data: {
+                        id : tayangan_id
+                    },
+                    success: function( result ) {
+                        console.log("success adding to download list")
+                        document.getElementById('unduhModal').style.display = 'block'
+                    },
+                    error: function( result ) {
+                        console.log("failed adding to download list")
+                    }
+                });
             }
             
             function closeUnduhModal() {

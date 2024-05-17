@@ -14,7 +14,7 @@ urlpatterns = [
     # fredo
     path('daftar_unduhan/', daftar_unduhan, name='daftar_unduhan'),
     path('daftar_favorit/', daftar_favorit, name='daftar_favorit'),
-    path('unduh/', unduh_film, name='unduh'),
+    path('unduh/', unduh, name='unduh'),
 
     # sabina
     path('kontributor/', kontributor, name='kontributor_page'),

@@ -1,5 +1,8 @@
 from django.db import connection
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse, HttpResponseBadRequest
+import uuid;
 
 def tayangan_guest(request):
     return render(request, "tayangan_guest.html")
@@ -38,6 +41,7 @@ def daftar_unduhan(request):
     context = {}
     with connection.cursor() as cursor:
         cursor.execute("SELECT judul, timestamp, id FROM tayangan_terunduh JOIN tayangan ON id_tayangan=id WHERE username = %s;", ["max_the_awesome"])
+        connection.commit()
         rows = cursor.fetchall()
         print(rows)
         context = {'rows' : rows}
@@ -54,6 +58,7 @@ def daftar_favorit(request):
             join daftar_favorit as df on tmdf.username=df.username and tmdf.timestamp=tmdf.timestamp
             group by (df.username, df.timestamp)
             having df.username=%s;""", ["max_the_awesome"])
+        connection.commit()
         rows = cursor.fetchall()
         print(rows)
 
@@ -71,9 +76,29 @@ def daftar_favorit(request):
         context = {'daftar_daftar_favorit' : daftar_daftar_favorit}
     return render(request, "daftar_favorit.html", context)
 
-def unduh_film(request):
-    print("unduh")
-    return redirect('/film/')
+@csrf_exempt
+def unduh(request):
+    if request.method == 'POST':
+        # get body
+        tayangan_id = request.POST.get('id')
+        username = "jenny98"
+
+        if not tayangan_id:
+            return HttpResponseBadRequest("Missing 'id' parameter in request body.")
+        try:
+            uuid.UUID(tayangan_id)
+        except ValueError:
+            return HttpResponseBadRequest("Invalid format for 'id'. Expected UUID.")
+        print("hei")
+        with connection.cursor() as cursor:
+            rows_affected = cursor.execute("insert into tayangan_terunduh values (%s, %s, NOW());", [tayangan_id, username])
+            connection.commit()
+            return HttpResponse("OK")
+
+    return HttpResponseBadRequest("Bad Request")
+
+
+
 
 
 # sabina
