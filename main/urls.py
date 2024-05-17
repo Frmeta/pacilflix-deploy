@@ -37,7 +37,7 @@ urlpatterns = [
     path("langganan/", langganan, name="langganan_page"),
     path("update_langganan/", update_langganan, name="update_langganan_page"),
     # ariana
-    path("", home, name="home"),
+    # path("", main, name="main"),
     # path('login/', login, name='login'),
     # path('profile/', profile, name='profile'),
 ]

@@ -74,8 +74,8 @@ def update_langganan(request):
 #     return render(request, "login.html")
 
 
-def home(request):
-    return render(request, "home.html")
+def main(request):
+    return render(request, "main.html")
 
 
 # def profile(request):

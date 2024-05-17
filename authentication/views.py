@@ -1,126 +1,84 @@
 from django.db import connection
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
-import datetime
-from django.http import HttpResponseRedirect
-
-# from django.shortcuts import redirect
+from django.shortcuts import redirect
+from django.contrib.auth import logout
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
-from django.db import connection
-from django.db.utils import IntegrityError
 
 
-# Create your views here.
-# ariana
-# def login(request):
-#     return render(request, "login.html")
+class LoggedInUser:
+    username = ""
 
 
-# def home(request):
-#     return render(request, "home.html")
-
-
-def profile(request):
-    return render(request, "profile.html")
+def register_page(request):
+    return render(request, "register.html")
 
 
 @csrf_exempt
 def register(request):
     if request.method == "POST":
         username = request.POST.get("username")
-        password1 = request.POST.get("password1")
-        password2 = request.POST.get("password2")
+        password = request.POST.get("password")
         negara = request.POST.get("negara")
-        messages = []
-
-        if not username or not password1 or not negara:
-            messages.append("All fields are required.")
-        elif len(username) < 3 or len(password1) < 6:
-            messages.append(
-                "Username must be at least 3 characters and password must be at least 6 characters."
-            )
-        if len(negara) < 2:
-            messages.append("Country must be at least 2 characters long.")
-        if password1 != password2:
-            messages.append("Password one and two must be same")
-
-        if messages:
-            return render(request, "home.html", {"messages": messages})
-
+        cursor = connection.cursor()
         try:
-            with connection.cursor() as cursor:
-                cursor.execute(
-                    rf"""
-                SET search_path to pacilflix;
-                INSERT INTO pengguna VALUES ('{username}', '{password1}', '{negara}')"""
-                )
-        except Exception as e:
-            messages.append(
-                "Username dengan nama tersebut sudah ada, silahkan coba yang lain!"
+            cursor.execute(
+                """
+                INSERT INTO pengguna (username, password, asal_negara)
+                VALUES (%s, %s, %s)
+            """,
+                (username, password, negara),
             )
-            return render(request, "register.html", {"messages": messages})
-        return HttpResponseRedirect(reverse("authentication:login"))
-
-    return render(request, "home.html")
+            return redirect("login")
+        except Exception as e:
+            error_message = str(e)
+            if "username" in error_message:
+                error_message = "Username sudah terdaftar!"
+            return render(request, "register.html", {"error_message": error_message})
+    return render(request, "register.html")
 
 
 @csrf_exempt
 def login(request):
+    context = {"error": ""}
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        messages = []
-
-        if not username or not password:
-            messages.append("Username and password are required.")
-        elif len(username) < 3 or len(password) < 6:
-            messages.append(
-                "Username must be at least 3 characters and password must be at least 6 characters."
-            )
-
-        if messages:
-            return render(request, "login.html", {"messages": messages})
-
         with connection.cursor() as cursor:
-            cursor.execute(
-                rf"""
-            SET search_path to pacilflix;
-            SELECT * FROM pengguna WHERE username = '{username}' AND password = '{password}'
-            """
-            )
-            user = cursor.fetchone()
-
-        if user:
-            with connection.cursor() as cursor:
+            try:
                 cursor.execute(
-                    rf"""
-                SET search_path to public;
-                """
+                    f"SELECT username, asal_negara FROM pengguna WHERE username='{username}' AND password='{password}';"
                 )
-            request.session["username"] = username
-            response = HttpResponseRedirect(reverse("main:home"))
+                result = cursor.fetchall()
+            except Exception as e:
+                context["error"] = str(e)
+                return render(request, "login.html", context)
+
+        if len(result) != 0:
+            username = result[0][0]
+            negara = result[0][1]
+            response = HttpResponseRedirect(reverse("tayangan"))
             response.set_cookie("username", username)
-            response.set_cookie("negara_asal", user[2])
-            response.set_cookie("last_login", str(datetime.datetime.now()))
+            response.set_cookie("negara", negara)
+            response.set_cookie("is_authenticated", "True")
             return response
         else:
-            messages.append("Sorry, incorrect username or password. Please try again.")
-            return render(request, "login.html", {"messages": messages})
+            context["error"] = "Username atau password salah! Silakan coba lagi."
 
-    return render(request, "login.html")
+    return render(request, "login.html", context)
 
 
-@csrf_exempt
-def logout(request):
-    with connection.cursor() as cursor:
-        cursor.execute(
-            rf"""
-                SET search_path to public;
-                """
-        )
-    response = HttpResponseRedirect(reverse("main:home"))
-    request.session.flush()
-    response.delete_cookie("last_login")
+def logout_user(request):
+    response = HttpResponseRedirect(reverse("show_main"))
     response.delete_cookie("username")
-    response.delete_cookie("negara_asal")
+    response.delete_cookie("negara")
+    response.delete_cookie("is_authenticated")
+    LoggedInUser.username = ""
     return response
+
+
+def show_main(request):
+    context = {}
+    return render(request, "blankRegist.html", context)
