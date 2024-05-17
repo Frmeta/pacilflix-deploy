@@ -1,5 +1,8 @@
 from django.db import connection
 from django.shortcuts import render
+from django.http import JsonResponse
+import json
+from django.contrib.auth.decorators import login_required
 
 def tayangan_guest(request):
     # asumsi menampilkan 10 film dan 10 series
@@ -129,6 +132,7 @@ def hasil_pencarian_guest(request):
         else:
             return render(request, "hasil_pencarian_guest.html")
 
+# @login_required(login_url='/login')
 def tayangan_aktif(request):
     with connection.cursor() as cursor:
         # TOP 10 TAYANGAN GLOBAL
@@ -357,7 +361,8 @@ def detail_page(request, title):
                     'release_date_film' : row[5],
                     'url_video_film' : url_video,
                     'asal_negara' : row[8],
-                    'sutradara' : row[11]
+                    'sutradara' : row[11],
+                    'id' : tayangan_id
                 })
 
             # fetch ulasan
@@ -533,7 +538,8 @@ def episode_page(request, title):
                     FROM SERIES s
                     JOIN EPISODE e ON s.id_tayangan = e.id_series
                     WHERE s.id_tayangan = t.id
-                ) AS episodes
+                ) AS episodes,
+                t.id
             FROM
                 EPISODE e
             JOIN
@@ -554,7 +560,8 @@ def episode_page(request, title):
             'sinopsis': row[2],
             'durasi': row[3],
             'url': row[4],
-            'release_date': row[5]
+            'release_date': row[5],
+            'id' : row[7]
         })
 
     episodes.remove(title)
@@ -564,9 +571,22 @@ def episode_page(request, title):
     }
     return render(request, 'episode.html', context)
 
-
-def hal_episode_page(request):
-    return render(request, "episode.html")
+def watch(request, id):
+    ''' ASUMSI
+    jika pengguna mensubmit watch dengan progress >= 70% maka akan disimpan ke riwayat_nonton
+    sedangkan jika < 70% maka tidak akan disimpan
+    sehingga views yang ditampilkan (yang diambil dari riwayat_nonton) dipastikan >= 70%
+    ''' 
+    username = request.user.username
+    if not username:
+        username = 'jenny98' # dummy username
+    if request.method == 'GET':
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                INSERT INTO RIWAYAT_NONTON (id_tayangan, username, start_date_time, end_date_time)
+                VALUES (%s, %s, NOW(), NOW())
+            """, [id, username])
+        return JsonResponse({'status': 'success'})
 
 # fredo
 def daftar_unduhan(request):

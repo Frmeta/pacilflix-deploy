@@ -13,6 +13,7 @@
     <div class="text-white rounded-xl w-3/4 m-2">
         {% for row in daftar %}
         <p class="flex justify-center text-4xl mt-24 mb-3 w-full text-white font-bold leading-tight text-center">{{ row.title}}</p>
+        {% if row.url_video_film != "unreleased" %}
         <div class="flex items-center w-full justify-center mb-5 flex-col">
             <label for="rating" class="font-semibold mr-2">Watch Progress :</label>
             <div class="w-full flex justify-center items-center">
@@ -21,9 +22,10 @@
                 <p>%</p>
             </div>
         </div>
+        {% endif %}
         <div class="flex flex-wrap justify-center w-full">
             {% if row.url_video_film != "unreleased" %}
-                <button class="px-4 py-2 mr-2 mt-2 bg-[#b91c1c] text-white font-bold rounded-full hover:bg-[#7f1d1d]" onclick="window.location.href='https://www.youtube.com/watch?v={{ row.url_video_film }}'">Watch</button>
+                <button class="px-4 py-2 mr-2 mt-2 bg-[#b91c1c] text-white font-bold rounded-full hover:bg-[#7f1d1d]" onclick="submitWatch('{{ row.id }}')">Watch</button>
             {% endif %}
                 <button onclick="openUnduhModal()" class="px-4 py-2 mr-2 mt-2 bg-[#b91c1c] text-white font-bold rounded-full transition-all hover:bg-[#7f1d1d]">Download</button>
                 <button onclick="openFavoritModal()" class="px-4 py-2 mt-2 bg-[#b91c1c] text-white font-bold rounded-full transition-all hover:bg-[#7f1d1d]">Add to Favorites</button>
@@ -102,6 +104,30 @@
         console.log(tmp)
         outputFilm.textContent = this.value;
     }
+
+    function submitWatch(id) {
+        var url_target = '/watch/' + id + '/';
+        const progress = document.getElementById('progress').value
+        if (progress >= 70){
+            fetch(url_target, {
+                method: 'GET',
+                headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }).then(response => {
+                    if (response.ok) {
+                        location.reload()
+                    } else {
+                        alert("View doesn't countttt");
+                    }
+                }).catch(error => {
+                    alert('Failed to submit watch');
+                });
+        } else{
+            alert("View doesn't count");
+        }
+    }
+
 </script>
 
 {% endblock content %}
