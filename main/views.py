@@ -129,11 +129,95 @@ def kontributor_penulis_skenario(request):
 
     return render(request, 'kontributor_penulis_skenario.html', context)
 
+# def langganan(request):
+#     context = {}
+#     with connection.cursor() as cursor:
+#         cursor.execute("""SELECT
+#                        """)
+#         rows = cursor.fetchall()
+#         print(rows)
+#         context = {'rows': rows}
+
+#     return render(request, 'langganan.html', context)
+
 def langganan(request):
-    return render(request, 'langganan.html')
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT 
+                t.username,
+                p.nama,
+                STRING_AGG(pr.dukungan_perangkat, ', ') AS perangkat,
+                p.harga,
+                p.resolusi_layar,
+                t.start_date_time,
+                t.end_date_time,
+                t.metode_pembayaran,
+                t.timestamp_pembayaran,
+                CASE
+                    WHEN CURRENT_DATE BETWEEN t.start_date_time AND t.end_date_time THEN 'current'
+                    ELSE 'past'
+                END AS status
+            FROM
+                transaction t
+            JOIN 
+                paket p ON t.nama_paket = p.nama
+            JOIN 
+                dukungan_perangkat pr ON p.nama = pr.nama_paket
+            WHERE 
+                t.username = %s
+            GROUP BY 
+                t.username, p.nama, p.harga, p.resolusi_layar, t.start_date_time, t.end_date_time, t.metode_pembayaran, t.timestamp_pembayaran
+            ORDER BY 
+                t.start_date_time DESC;
+        """, ["jenny98"])
+        rows = cursor.fetchall()
+        
+        current_paket = {
+            'nama': '-',
+            'perangkat': '-',
+            'harga': '-',
+            'resolusi_layar': '-',
+            'start_date_time': '-',
+            'end_date_time': '-',
+            'metode_pembayaran': '-',
+            'timestamp_pembayaran': '-',
+        }
+        past_pakets = []
+        
+        for row in rows:
+            paket = {
+                'nama': row[1],
+                'perangkat': row[2],
+                'harga': row[3],
+                'resolusi_layar': row[4],
+                'start_date_time': row[5],
+                'end_date_time': row[6],
+                'metode_pembayaran': row[7],
+                'timestamp_pembayaran': row[8],
+            }
+            if row[9] == 'current':
+                current_paket = paket
+            else:
+                past_pakets.append(paket)
+        
+        context = {
+            'username': 'jenny98',
+            'current_paket': current_paket,
+            'past_pakets': past_pakets,
+        }
+    
+    return render(request, 'langganan.html', context)
 
 def update_langganan(request):
-    return render(request, 'update_langganan.html')
+    context = {}
+    with connection.cursor() as cursor:
+        cursor.execute("""SELECT
+                       """)
+        rows = cursor.fetchall()
+        print(rows)
+        context = {'rows': rows}
+
+    return render(request, 'update_langganan.html', context)
 
 # ariana
 def login(request):
