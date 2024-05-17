@@ -45,16 +45,89 @@ def daftar_favorit(request):
 
 # sabina
 def kontributor(request):
-    return render(request, 'kontributor.html')
+    context = {}
+    with connection.cursor() as cursor:
+        cursor.execute("""SELECT 
+                            c.id, c.nama,
+                            CASE
+                            WHEN c.jenis_kelamin = 0 THEN 'M'
+                            WHEN c.jenis_kelamin = 1 THEN 'F'
+                            END AS jenis_kelamin,
+                            STRING_AGG(t.type, ', ') AS types,
+                            c.kewarganegaraan
+                        FROM (
+                            (SELECT c.id, c.nama, c.jenis_kelamin, 'Pemain' AS type, c.kewarganegaraan
+                            FROM contributors c
+                            JOIN pemain w ON c.id = w.id)
+                            UNION
+                            (SELECT c.id, c.nama, c.jenis_kelamin, 'Sutradara' AS type, c.kewarganegaraan
+                            FROM contributors c
+                            JOIN sutradara d ON c.id = d.id)
+                            UNION
+                            (SELECT c.id, c.nama, c.jenis_kelamin, 'Penulis Skenario' AS type, c.kewarganegaraan
+                            FROM contributors c
+                            JOIN penulis_skenario ps ON c.id = ps.id)
+                        ) t
+                        JOIN contributors c ON t.id = c.id
+                        GROUP BY c.id, c.nama
+                        ORDER BY 
+                            c.nama;""")
+        rows = cursor.fetchall()
+        print(rows)
+        context = {'rows': rows}
+
+    return render(request, 'kontributor.html', context)
 
 def kontributor_pemain(request):
-    return render(request, 'kontributor_pemain.html')
+    context = {}
+    with connection.cursor() as cursor:
+        cursor.execute("""SELECT nama,
+                        CASE
+                        WHEN jenis_kelamin = 0 THEN 'M'
+                        WHEN jenis_kelamin = 1 THEN 'F'
+                        END AS jenis_kelamin,
+                        kewarganegaraan
+                        FROM contributors
+                        NATURAL JOIN pemain;""")
+        rows = cursor.fetchall()
+        print(rows)
+        context = {'rows': rows}
+
+    return render(request, 'kontributor_pemain.html', context)
 
 def kontributor_sutradara(request):
-    return render(request, 'kontributor_sutradara.html')
+    context = {}
+    with connection.cursor() as cursor:
+        cursor.execute("""SELECT nama,
+                        CASE
+                        WHEN jenis_kelamin = 0 THEN 'M'
+                        WHEN jenis_kelamin = 1 THEN 'F'
+                        END AS jenis_kelamin,
+                        kewarganegaraan
+                        FROM contributors
+                        NATURAL JOIN sutradara;""")
+        rows = cursor.fetchall()
+        print(rows)
+        context = {'rows': rows}
+
+    return render(request, 'kontributor_sutradara.html', context)
 
 def kontributor_penulis_skenario(request):
-    return render(request, 'kontributor_penulis_skenario.html')
+    context = {}
+    with connection.cursor() as cursor:
+        cursor.execute("""SELECT nama,
+                        CASE
+                        WHEN jenis_kelamin = 0 THEN 'M'
+                        WHEN jenis_kelamin = 1 THEN 'F'
+                        END AS jenis_kelamin,
+                        kewarganegaraan
+                        FROM contributors
+                        NATURAL JOIN penulis_skenario;""")
+        rows = cursor.fetchall()
+        print(rows)
+        context = {'rows': rows}
+
+    return render(request, 'kontributor_penulis_skenario.html', context)
 
 def langganan(request):
     return render(request, 'langganan.html')

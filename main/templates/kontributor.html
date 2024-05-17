@@ -34,7 +34,7 @@
         align-items: center;
         margin-top: 0px;
         margin-right: 80px;
-        width: calc(100% - 160px);
+        width: 100%;
         padding: 0px;
         background-color: transparent;
         border-spacing: 0;
@@ -59,15 +59,19 @@
     }
 
     th:first-child, td:first-child {
-        width: 50%;
+        width: 30%;
     }
 
     th:nth-child(2), td:nth-child(2) {
-        width: 20%;
+        width: 30%;
+    }
+
+    th:nth-child(3), td:nth-child(2) {
+        width: 15%;
     }
 
     th:last-child, td:last-child {
-        width: 30%;
+        width: 25%;
     }
 
     .pemain {
@@ -85,6 +89,7 @@
 
     .chips-container {
         text-align: center;
+        margin-bottom: 20px;
     }
 
     .button-chips {
@@ -104,68 +109,27 @@
     <a href="/kontributor_penulis_skenario/" class="button-chips">Penulis Skenario</a>
 </div>
 
-<div class="pemain">
-    <h4>Pemain</h4>
+<div class="container">
     <table>
         <tr>
             <th>Nama</th>
+            <th>Tipe</th>
             <th>Jenis Kelamin</th>
             <th>Kewarganegaraan</th>
         </tr>
+
+        {% for row in rows %}
         <tr>
-            <td>Greta Gerwig</td>
-            <td>F</td>
-            <td>USA</td>
+            <td>{{row.1}}</td>
+            <td>{{row.3}}</td>
+            <td>{{row.2}}</td>
+            <td>{{row.4}}</td>
         </tr>
-        <tr>
-            <td>Greta Gerwig</td>
-            <td>F</td>
-            <td>USA</td>
-        </tr>
+        {% endfor %}
     </table>
 </div>
 
-<div class="sutradara">
-    <h4>Sutradara</h4>
-    <table>
-        <tr>
-            <th>Nama</th>
-            <th>Jenis Kelamin</th>
-            <th>Kewarganegaraan</th>
-        </tr>
-        <tr>
-            <td>Lucia Puenzo</td>
-            <td>F</td>
-            <td>Argentina</td>
-        </tr>
-        <tr>
-            <td>Lucia Puenzo</td>
-            <td>F</td>
-            <td>Argentina</td>
-        </tr>
-    </table>
-</div>
-
-<div class="penulis-skenario">
-    <h4>Penulis Skenario</h4>
-    <table>
-        <tr>
-            <th>Nama</th>
-            <th>Jenis Kelamin</th>
-            <th>Kewarganegaraan</th>
-        </tr>
-        <tr>
-            <td>Kirill Serebrennikov</td>
-            <td>M</td>
-            <td>Rusia</td>
-        </tr>
-        <tr>
-            <td>Kirill Serebrennikov</td>
-            <td>M</td>
-            <td>Rusia</td>
-        </tr>
-    </table>
-</div>
 <br>
-
+<br>
+<br>
 {% endblock content %}

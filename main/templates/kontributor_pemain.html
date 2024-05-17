@@ -30,7 +30,7 @@
         align-items: center;
         margin-top: 0px;
         margin-right: 80px;
-        width: calc(100% - 160px);
+        width: 100%;
         padding: 0px;
         background-color: transparent;
         border-spacing: 0;
@@ -74,6 +74,7 @@
     .chips-container {
         text-align: center;
         margin-top: 0;
+        margin-bottom: 20px;
     }
 
     .button-chips {
@@ -98,25 +99,25 @@
     <a href="/kontributor_penulis_skenario/" class="button-chips" id="penulis-chips">Penulis Skenario</a>
 </div>
 
-<div class="pemain">
-    <h4>Pemain</h4>
+<div class="container">
     <table>
         <tr>
             <th>Nama</th>
             <th>Jenis Kelamin</th>
             <th>Kewarganegaraan</th>
         </tr>
+
+        {% for row in rows %}
         <tr>
-            <td>Greta Gerwig</td>
-            <td>F</td>
-            <td>USA</td>
+            <td>{{row.0}}</td>
+            <td>{{row.1}}</td>
+            <td>{{row.2}}</td>
         </tr>
-        <tr>
-            <td>Greta Gerwig</td>
-            <td>F</td>
-            <td>USA</td>
-        </tr>
+        {% endfor %}
     </table>
 </div>
 
+<br>
+<br>
+<br>
 {% endblock content %}
