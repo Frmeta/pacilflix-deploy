@@ -1,5 +1,5 @@
 from django.db import connection
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 def tayangan_guest(request):
     return render(request, "tayangan_guest.html")
@@ -37,7 +37,7 @@ def ulasan_page(request):
 def daftar_unduhan(request):
     context = {}
     with connection.cursor() as cursor:
-        cursor.execute("SELECT judul, timestamp FROM tayangan_terunduh JOIN tayangan ON id_tayangan=id WHERE username = %s;", ["max_the_awesome"])
+        cursor.execute("SELECT judul, timestamp, id FROM tayangan_terunduh JOIN tayangan ON id_tayangan=id WHERE username = %s;", ["max_the_awesome"])
         rows = cursor.fetchall()
         print(rows)
         context = {'rows' : rows}
@@ -70,6 +70,10 @@ def daftar_favorit(request):
             
         context = {'daftar_daftar_favorit' : daftar_daftar_favorit}
     return render(request, "daftar_favorit.html", context)
+
+def unduh_film(request):
+    print("unduh")
+    return redirect('/film/')
 
 
 # sabina
