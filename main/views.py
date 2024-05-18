@@ -525,7 +525,7 @@ def detail_page(request, id):
                 'id' : id
             })
         
-def episode_page(request, title):
+def episode_page(request, title, id):
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT
@@ -540,8 +540,7 @@ def episode_page(request, title):
                     FROM SERIES s
                     JOIN EPISODE e ON s.id_tayangan = e.id_series
                     WHERE s.id_tayangan = t.id
-                ) AS episodes,
-                t.id
+                ) AS episodes
             FROM
                 EPISODE e
             JOIN
@@ -550,7 +549,9 @@ def episode_page(request, title):
                 TAYANGAN t ON t.id = s.id_tayangan
             WHERE
                 e.sub_judul = %s
-        """, [title])
+            AND
+                e.id_series = %s
+        """, [title, id])
         data = cursor.fetchall()
     episode_list = []
     for row in data:
@@ -567,13 +568,14 @@ def episode_page(request, title):
             'durasi': row[3],
             'url': url_video,
             'release_date': row[5],
-            'id' : row[7]
+            'id' : id
         })
 
     episodes.remove(title)
     context = {
         'daftar': episode_list,
-        'episode_list' : episodes
+        'episode_list' : episodes,
+        'id' : id
     }
     return render(request, 'episode.html', context)
 

@@ -19,7 +19,7 @@
             <p class="mt-5 font-bold text-lg mb-1">Episode</p>
             <div class="flex gap-2 ">
                 {% for episode in episode_list %}
-                    <a href="{% url 'episode_page' episode %}" class="border-2 border-[#b91c1c] text-white font-bold rounded-full  transition-all hover:cursor-pointer hover:bg-[#b91c1c] mb-2 px-5 py-2">{{ episode }}</a>
+                    <a href="/episode/{{ episode }}/{{ id }}/" class="border-2 border-[#b91c1c] text-white font-bold rounded-full  transition-all hover:cursor-pointer hover:bg-[#b91c1c] mb-2 px-5 py-2">{{ episode }}</a>
                 {% endfor %}
             </div>
         </ul>

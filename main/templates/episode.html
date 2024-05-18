@@ -17,7 +17,7 @@
         <div class="flex items-center w-full justify-center mb-5 flex-col">
             <label for="rating" class="font-semibold mr-2">Watch Progress :</label>
             <div class="w-full flex justify-center items-center">
-                <input type="range" id="progress" name="progress" min="0.0" max="100.0" step="1" class="h-3 w-4/6 rounded-md" />
+                <input type="range" id="progress" name="progress" min="0.0" max="100.0" step="1" value="0" class="h-3 w-4/6 rounded-md" />
                 <span id="progress-value" class="ml-2 text-white">50</span>
                 <p>%</p>
             </div>
@@ -32,7 +32,7 @@
         <p class="mt-5 font-bold text-lg mb-2">Other episodes</p>
         <ul class="flex gap-2">
             {% for episode in episode_list %}
-            <a href="{% url 'episode_page' episode %}" class="border-2 border-[#b91c1c] text-white font-bold rounded-full  transition-all hover:cursor-pointer hover:bg-[#b91c1c] mb-2 px-5 py-2">{{ episode }}</a>
+            <a href="/episode/{{ episode }}/{{ id }}/" class="border-2 border-[#b91c1c] text-white font-bold rounded-full  transition-all hover:cursor-pointer hover:bg-[#b91c1c] mb-2 px-5 py-2">{{ episode }}</a>
             {% endfor %}
         </ul>
         {% endif %}

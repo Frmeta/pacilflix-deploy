@@ -8,7 +8,7 @@ urlpatterns = [
     path('tayangan_aktif/', tayangan_aktif, name='tayangan_aktif_page'),
     path('hasil_pencarian_aktif/', hasil_pencarian_aktif, name='hasil_pencarian_aktif_page'),
     path('detail/<str:id>/', detail_page, name='detail_page'),
-    path('episode/<str:title>/', episode_page, name='episode_page'),
+    path('episode/<str:title>/<str:id>/', episode_page, name='episode_page'),
     path('watch/<str:id>/', watch, name='watch'),
     path('review/<str:id>/', review, name='review'),
 
