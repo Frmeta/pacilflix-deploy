@@ -624,30 +624,36 @@ def daftar_favorit(request):
 
 # sabina
 def kontributor(request):
-    return render(request, 'kontributor.html')
+    return render(request, "kontributor.html")
+
 
 def kontributor_pemain(request):
-    return render(request, 'kontributor_pemain.html')
+    return render(request, "kontributor_pemain.html")
+
 
 def kontributor_sutradara(request):
-    return render(request, 'kontributor_sutradara.html')
+    return render(request, "kontributor_sutradara.html")
+
 
 def kontributor_penulis_skenario(request):
-    return render(request, 'kontributor_penulis_skenario.html')
+    return render(request, "kontributor_penulis_skenario.html")
+
 
 def langganan(request):
-    return render(request, 'langganan.html')
+    return render(request, "langganan.html")
+
 
 def update_langganan(request):
-    return render(request, 'update_langganan.html')
-
-# ariana
-def login(request):
-    return render(request, "login.html")
+    return render(request, "update_langganan.html")
 
 
-def home(request):
-    return render(request, "home.html")
+# # ariana
+# def login(request):
+#     return render(request, "login.html")
+
+
+def main(request):
+    return render(request, "main.html")
 
 
 def profile(request):
