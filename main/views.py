@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, HttpResponseBadRequest
 import uuid;
 from django.utils import timezone
+from django.core import serializers
 
 def tayangan_guest(request):
     # asumsi menampilkan 10 film dan 10 series
@@ -697,7 +698,7 @@ def daftar_favorit(request):
         cursor.execute("""
             select df.judul, df.timestamp, ARRAY_AGG(t.judul) as tayangan_list, ARRAY_AGG(tmdf.timestamp) as tayangan_timestamp_list
             from tayangan t join tayangan_memiliki_daftar_favorit as tmdf on t.id=tmdf.id_tayangan
-            join daftar_favorit as df on tmdf.username=df.username and tmdf.timestamp=tmdf.timestamp
+            right outer join daftar_favorit as df on tmdf.username=df.username and tmdf.timestamp=tmdf.timestamp
             group by (df.username, df.timestamp)
             having df.username=%s;""", [username])
         connection.commit()
@@ -709,8 +710,11 @@ def daftar_favorit(request):
             part1 = row[0]
             part2 = row[1]
             part3 = []
-            for i in range(len(row[2])):
-                part3.append((row[2][i], row[3][i]))
+            if len(row[2])==1 and row[2][0] == None:
+                pass
+            else:
+                for i in range(len(row[2])):
+                    part3.append((row[2][i], row[3][i]))
             daftar_favorit = (part1, part2, part3)
             daftar_daftar_favorit.append(daftar_favorit)
             print(daftar_favorit)
@@ -718,10 +722,48 @@ def daftar_favorit(request):
         context = {'daftar_daftar_favorit' : daftar_daftar_favorit}
     return render(request, "daftar_favorit.html", context)
 
+@csrf_exempt
+def bikin_daftar_favorit(request):
+    if request.method == 'POST':
+        judul = request.POST.get('judul')
+        username = request.COOKIES.get("username")
+        if not username: return HttpResponseBadRequest("Missing 'username' parameter in cookies.")
+        if not judul: return HttpResponseBadRequest("Missing 'id' parameter in request body.")
+    
+        context = {}
+        with connection.cursor() as cursor:
+            try:
+                cursor.execute("""
+                    insert into daftar_favorit (timestamp, username, judul) values (NOW(), %s, %s);""", [username, judul])
+                connection.commit()
+            except Exception as e:
+                return redirect('daftar_favorit')
+
+            return redirect('daftar_favorit')
+                                
+    return HttpResponseBadRequest("Bad Request")
+
+def get_daftar_favorit(request):
+    username = request.COOKIES.get("username")
+    if not username: return HttpResponseBadRequest("Missing 'username' parameter in cookies.")
+
+    with connection.cursor() as cursor:
+        cursor.execute("select timestamp, username, judul from daftar_favorit where username=%s;", [username])
+        connection.commit()
+        rows = cursor.fetchall()
+        
+        output = []
+        for row in rows:
+            output.append({'timestamp':row[0], 'username':row[1], 'judul':row[2]})
+        return JsonResponse(output, safe=False)
+
 def tambah_favorit(request):
     username = request.COOKIES.get("username")
     if not username: return HttpResponseBadRequest("Missing 'username' parameter in cookies.")
-    
+
+def detail_daftar_favorit(request):
+    # TODO
+    pass
 
 
 

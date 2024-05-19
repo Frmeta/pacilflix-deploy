@@ -7,32 +7,83 @@
         <h1 class="text-5xl text-center mt-24 mb-5">Daftar Favorit</h1>
         
         {% for daftar_favorit in daftar_daftar_favorit %}
-
-        <!-- New Smaller Title -->
-        <h2 class="text-3xl text-center mt-12 mb-3"> Daftar Favorit {{ daftar_favorit.0 }} </h2>
-        
-
-        <div class="grid grid-cols-3 gap-y-0 mt-6">
-            <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Judul</p>
-            <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Waktu Ditambahkan</p>
-            <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Aksi</p>
-        </div>
-
-        <div class="grid grid-cols-3 gap-y-0">
+            <!-- New Smaller Title -->
+            <h2 class="text-3xl text-center mt-12 mb-3"> Daftar Favorit {{ daftar_favorit.0 }} </h2>
             
-            {% for tayangan in daftar_favorit.2 %}
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">{{ tayangan.0 }}</p>
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white text-justify">{{ tayangan.1 }}</p>
-            <div class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">
-                <button class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-red-500 font-bold rounded-full transition-all hover:bg-red-700">
-                    Hapus
-                </button>
+
+            <div class="grid grid-cols-3 gap-y-0 mt-6">
+                <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Judul</p>
+                <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Waktu Ditambahkan</p>
+                <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Aksi</p>
             </div>
-            {% endfor %}
-            
-            
-        </div>
+
+            <div class="grid grid-cols-3 gap-y-0">
+                
+                {% if daftar_favorit.2 %}
+                {% for tayangan in daftar_favorit.2 %}
+                <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">{{ tayangan.0 }}</p>
+                <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white text-justify">{{ tayangan.1 }}</p>
+                <div class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">
+                    <button class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-red-500 font-bold rounded-full transition-all hover:bg-red-700">
+                        Hapus
+                    </button>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
         {% endfor %}
+
+        <!-- Add new button here -->
+        <div class="flex justify-center mt-6">
+            <button onclick="openBikinDaftarFavoritModal()" class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-[#b91c1c] font-bold rounded-full transition-all hover:bg-[#7f1d1d]">
+                Create new favorite list
+            </button>
+        </div>
+
     </div>
 </div>
+
+
+<!-- Modal for creating new favorite list -->
+<div id="bikinDaftarFavoritModal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-black bg-opacity-75 transition-opacity" aria-hidden="true" onclick="closeBikinDaftarFavoritModal()"></div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+        <div class="inline-block align-bottom bg-black rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border-2 border-white">
+            <form method="POST" action="{% url 'bikin_daftar_favorit' %}">
+                <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                            <h3 class="mb-6 text-lg leading-6 font-medium text-white" id="modal-title">
+                                CREATE NEW FAVORITE LIST
+                            </h3>
+                            <div class="mt-2">
+                                <p class="text-sm">
+                                    <label for="judul">Favorite list title: </label>
+                                    <input id="judul" name="judul" class="text-white bg-black" type="text" required>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-black px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="submit" class="mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        Create
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openBikinDaftarFavoritModal() {
+        document.getElementById('bikinDaftarFavoritModal').style.display = 'block';
+    }
+
+    function closeBikinDaftarFavoritModal() {
+        document.getElementById('bikinDaftarFavoritModal').style.display = 'none';
+    }
+</script>
+
 {% endblock content %}
