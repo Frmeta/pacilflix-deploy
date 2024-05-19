@@ -8,6 +8,7 @@ from django.http import HttpResponse, HttpResponseBadRequest
 import uuid;
 from django.utils import timezone
 from django.core import serializers
+from datetime import datetime, timedelta
 
 def tayangan_guest(request):
     # asumsi menampilkan 10 film dan 10 series
@@ -655,9 +656,10 @@ def unduh(request):
             return HttpResponseBadRequest("Invalid format for 'id'. Expected UUID.")
         
         with connection.cursor() as cursor:
-            rows_affected = cursor.execute("insert into tayangan_terunduh values (%s, %s, NOW());", [tayangan_id, username])
+            now = datetime.now()
+            rows_affected = cursor.execute("insert into tayangan_terunduh values (%s, %s, %s);", [tayangan_id, username, datetime.now()])
             connection.commit()
-            return HttpResponse("OK")
+            return JsonResponse({'valid_till' : (now + timedelta(hours=24)).isoformat()})
 
     return HttpResponseBadRequest("Bad Request")
 
@@ -771,7 +773,15 @@ def tambah_favorit(request):
     return HttpResponseBadRequest("Bad Request")
 
 def detail_daftar_favorit(request, timestamp):
-    context = {"timestamp" : timestamp}
+    username = request.COOKIES.get("username")
+    if not username: return HttpResponseBadRequest("Missing 'username' parameter in cookies.")
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT judul from daftar_favorit where username=%s AND timestamp=%s", [username, timestamp])
+        connection.commit()
+        rows = cursor.fetchall()
+
+    context = {"timestamp" : timestamp, "judul" : rows[0][0]}
     return render(request, "detail_daftar_favorit.html", context)
 
 def get_detail_daftar_favorit(request):
@@ -781,7 +791,7 @@ def get_detail_daftar_favorit(request):
     timestamp = request.GET.get("timestamp")
 
     with connection.cursor() as cursor:
-        cursor.execute("""SELECT df.timestamp, df.username, t.judul
+        cursor.execute("""SELECT df.timestamp, df.username, t.judul, t.id
                         FROM tayangan_memiliki_daftar_favorit tmdf
                         JOIN daftar_favorit df ON tmdf.username=df.username and tmdf.timestamp=df.timestamp 
                         JOIN tayangan t on t.id=id_tayangan
@@ -791,8 +801,28 @@ def get_detail_daftar_favorit(request):
         
         output = []
         for row in rows:
-            output.append({'timestamp':row[0].strftime("%Y-%m-%d %H:%M:%S.%f"), 'username':row[1], 'judul':row[2]})
+            output.append(
+                {'timestamp':row[0].strftime("%Y-%m-%d %H:%M:%S.%f"),
+                 'username':row[1],
+                 'judul':row[2],
+                 'id_tayangan':row[3]})
         return JsonResponse(output, safe=False)
+    
+def delete_tayangan_di_daftar_favorit(request):
+    username = request.COOKIES.get("username")
+    timestamp = request.POST.get("timestamp")
+    id_tayangan = request.POST.get("id_tayangan")
+
+    if request.method != 'POST' or not timestamp or not id_tayangan or not username:
+        return HttpResponseBadRequest("Bad Request!")
+    
+    with connection.cursor() as cursor:
+        cursor.execute("""
+                        DELETE FROM TAYANGAN_MEMILIKI_DAFTAR_FAVORIT
+                        WHERE USERNAME=%s AND TIMESTAMP=%s AND ID_TAYANGAN=%s;
+                       """, [username, timestamp, id_tayangan])
+        connection.commit()
+        return HttpResponse("OK")
 
 # sabina
 def kontributor(request):

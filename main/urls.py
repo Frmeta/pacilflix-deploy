@@ -29,6 +29,7 @@ urlpatterns = [
     path('detail_daftar_favorit/<str:timestamp>/', detail_daftar_favorit, name='detail_daftar_favorit'),
     path('tambah_favorit/', tambah_favorit, name='tambah_favorit'),
     path('get_detail_daftar_favorit/', get_detail_daftar_favorit, name='get_detail_daftar_favorit'), #json
+    path('delete_tayangan_di_daftar_favorit/', delete_tayangan_di_daftar_favorit, name="delete_tayangan_di_daftar_favorit"),
 
 
     # sabina

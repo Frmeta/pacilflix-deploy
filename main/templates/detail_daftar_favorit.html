@@ -5,6 +5,7 @@
 <div class="flex items-center justify-center pb-24">
     <div class="text-white rounded-xl w-3/4 m-2">
         <h1 class="text-5xl text-center mt-24 mb-5">Detail Daftar Favorit</h1>
+        <h1 class="text-3xl text-center mt-24 mb-5">{{ judul }}</h1>
             
 
             <div class="grid grid-cols-2 gap-y-0 mt-6">
@@ -22,14 +23,14 @@
 
 <script>
     $(document).ready(function() {
-        refresh("{{ timestamp }}")
+        refresh()
     })
 
-    function refresh(timestamp){
+    function refresh(){
         $.ajax({
             method: "GET",
             url: "{% url 'get_detail_daftar_favorit' %}",
-            data: {'timestamp' : timestamp},
+            data: {'timestamp' : "{{ timestamp }}"},
             success: function( result ) {
                 console.log("success fetch daftar_favorit")
                 process(result)
@@ -46,17 +47,22 @@
         isinya = ""
         $.each(result, function(index, item) {
             isinya += 
-                "<p class=\"font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white\">"
+                `<p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">`
                 + item.judul
                 + `</p>
                     <div class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">
-                        <button onclick="hapus('` + item.timestamp + `')" class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-red-500 font-bold rounded-full transition-all hover:bg-red-700">
+                        <button onclick="hapus('${item.timestamp}', '${item.id_tayangan}')" class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-red-500 font-bold rounded-full transition-all hover:bg-red-700">
                             Hapus
                         </button>
                     </div>
             `
         });
-        $("#daftar_favorit").html(isinya)
+        if (isinya == ""){
+            $("#daftar_favorit").html("Nothing here...")
+        } else{
+            $("#daftar_favorit").html(isinya)
+        }
+        
     }
 
     function openBikinDaftarFavoritModal() {
@@ -67,20 +73,21 @@
         document.getElementById('bikinDaftarFavoritModal').style.display = 'none';
     }
 
-    function hapus(timestampnya){
+    function hapus(timestampnya, id_tayangannya){
         console.log("hapus")
         $.ajax({
             method: "POST",
-            url: "{% url 'delete_daftar_favorit' %}",
+            url: "{% url 'delete_tayangan_di_daftar_favorit' %}",
             data: {
                 timestamp: timestampnya,
+                id_tayangan: id_tayangannya
             },
             success: function( result ) {
                 console.log("success deleting")
                 refresh()
             },
             error: function( result ) {
-                console.log("failed delete daftar favorit" + result.responseText)
+                console.log("failed delete: " + result.responseText)
             }
         });
     }

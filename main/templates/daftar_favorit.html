@@ -97,7 +97,12 @@
                     </div>
             `
         });
-        $("#daftar_favorit").html(isinya)
+        if (isinya == ""){
+            $("#daftar_favorit").html("Nothing here...")
+        } else{
+            $("#daftar_favorit").html(isinya)
+        }
+        
     }
 
     function openBikinDaftarFavoritModal() {

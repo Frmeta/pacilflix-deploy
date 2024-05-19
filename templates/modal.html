@@ -16,7 +16,7 @@
             <div class="mt-2">
                 <p class="text-sm">
                     Congrats! You have successfully downloaded Godzilla vs Kong
-                    and it will be valid until May 20 2024.
+                    and it will be valid until <div id="valid_till">May 20 2024</div>.
                     Check the complete information on the download list page.
                 </p>
             </div>
@@ -101,6 +101,7 @@
             success: function( result ) {
                 console.log("success adding to download list")
                 document.getElementById('unduhModal').style.display = 'block'
+                $("#valid_till").html(result.valid_till)
             },
             error: function( result ) {
                 console.log("failed adding to download list" + result.responseText)
