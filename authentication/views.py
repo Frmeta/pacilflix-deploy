@@ -13,16 +13,19 @@ class LoggedInUser:
 
 
 def show_main(request):
+    print("show main")
     context = {}
     return render(request, "main.html", context)
 
 
 def show_register(request):
+    print("show register")
     return render(request, "register.html")
 
 
 @csrf_exempt
 def register(request):
+    print('register')
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -52,6 +55,7 @@ def register(request):
 
 @csrf_exempt
 def login(request):
+    print("LOGINN")
     context = {"error": ""}
     if request.method == "POST":
         username = request.POST.get("username")
@@ -76,11 +80,12 @@ def login(request):
             return response
         else:
             context["error"] = "Username atau password salah! Silakan coba lagi."
-
+    print("end login")
     return render(request, "login.html", context)
 
 
 def logout_user(request):
+    print("logout")
     response = HttpResponseRedirect(reverse("show_main"))
     response.delete_cookie("username")
     response.delete_cookie("negara")
