@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'navbar_aktif.html' %}
+
+<style>
+    #films-and-shows-button {
+        font-weight: bold;
+    }
+</style>
+
+<div class="flex items-center justify-center pb-24">
+    <div class="text-white rounded-xl w-3/4 m-2">
+        {% for row in daftar %}
+        <p class="flex justify-center text-4xl mt-24 mb-2 w-full text-white font-bold leading-tight text-center">{{row.title}}</p>
+        <p class="flex justify-center text-2xl mb-5 w-full text-white leading-tight text-center">{{ row.sub_judul }}</p>
+        <div class="flex items-center w-full justify-center mb-5 flex-col">
+            <label for="rating" class="font-semibold mr-2">Watch Progress :</label>
+            <div class="w-full flex justify-center items-center">
+                <input type="range" id="progress" name="progress" min="0.0" max="100.0" step="1" value="0" class="h-3 w-4/6 rounded-md" />
+                <span id="progress-value" class="ml-2 text-white">50</span>
+                <p>%</p>
+            </div>
+        </div>
+        {% if row.url != "unreleased" %}
+            <div class="flex justify-center w-full">
+                <button class="px-4 py-2 mr-2 mt-2 bg-[#b91c1c] text-white font-bold rounded-full hover:bg-[#7f1d1d]" onclick="submitWatch('{{ row.id }}')">Watch</button>
+            </div>  
+        {% endif %}
+        
+        {% if episode_list %}
+        <p class="mt-5 font-bold text-lg mb-2">Other episodes</p>
+        <ul class="flex gap-2">
+            {% for episode in episode_list %}
+            <a href="/episode/{{ episode }}/{{ id }}/" class="border-2 border-[#b91c1c] text-white font-bold rounded-full  transition-all hover:cursor-pointer hover:bg-[#b91c1c] mb-2 px-5 py-2">{{ episode }}</a>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        
+        <div class="w-full mr-7">
+            <p class="mt-5 font-bold text-lg mb-1">Synopsis</p>
+            <p class="font-extralight text-justify">{{ row.sinopsis }}</p>
+            <p class="mt-5 font-bold text-lg mb-1">Duration</p>
+            <a class="font-extralight">{{ row.durasi }}</a>
+            <a class="font-extralight">mins</a>
+            <p class="mt-5 font-bold text-lg mb-1">Episode URL</p>
+            {% if row.url != "unreleased" %}
+                <a class="font-extralight" href="https://www.youtube.com/watch?v={{ row.url }}" target="_blank">https://www.youtube.com/watch?v={{ row.url }}</a>
+            {% else %}    
+                <a class="font-extralight">Episode is not released yet</a>
+            {% endif %}
+            <p class="mt-5 font-bold text-lg mb-1">Release Date</p>
+            <p class="font-extralight">{{ row.release_date }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    const slider = document.getElementById("progress");
+    const output = document.getElementById("progress-value");
+    output.textContent = slider.value;
+    
+    slider.oninput = function() {
+        output.textContent = this.value;
+    }
+
+    function submitWatch(id) {
+        var url_target = '/watch/' + id + '/';
+        const progress = document.getElementById('progress').value
+        if (progress >= 70){
+            fetch(url_target, {
+                method: 'GET',
+                headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }).then(response => {
+                    if (response.ok) {
+                        location.reload()
+                    } else {
+                        alert("View doesn't count");
+                    }
+                }).catch(error => {
+                    alert('Failed to submit watch');
+                });
+        } else{
+            alert("View doesn't count");
+        }
+    }
+</script>
+
+{% endblock content %}
