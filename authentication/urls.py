@@ -1,6 +1,5 @@
 from authentication.views import register, login, logout_user, show_main, show_register
 from django.urls import path
-from main.views import *
 
 urlpatterns = [
     # ariana
