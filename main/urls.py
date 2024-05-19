@@ -13,9 +13,25 @@ urlpatterns = [
     path('review/<str:id>/', review, name='review'),
 
     # fredo
-    path("daftar_unduhan/", daftar_unduhan, name="daftar_unduhan"),
-    path("daftar_favorit/", daftar_favorit, name="daftar_favorit"),
+    # unduh
+    path('daftar_unduhan/', daftar_unduhan, name='daftar_unduhan'),
+    path('unduh/', unduh, name='unduh'),
+    path('hapus_unduhan/', hapus_unduhan, name='hapus_unduhan'),
     
+    # daftar favorit
+    path('daftar_favorit/', daftar_favorit, name='daftar_favorit'),
+    path("bikin_daftar_favorit/", bikin_daftar_favorit, name='bikin_daftar_favorit'),
+    path("get_daftar_favorit/", get_daftar_favorit, name="get_daftar_favorit"),
+    path("delete_daftar_favorit/", delete_daftar_favorit, name="delete_daftar_favorit"),
+
+    # tayangan di daftar favorit
+    path('detail_daftar_favorit/', detail_daftar_favorit, name='detail_daftar_favorit'),
+    path('detail_daftar_favorit/<str:timestamp>/', detail_daftar_favorit, name='detail_daftar_favorit'),
+    path('tambah_favorit/', tambah_favorit, name='tambah_favorit'),
+    path('get_detail_daftar_favorit/', get_detail_daftar_favorit, name='get_detail_daftar_favorit'), #json
+    path('delete_tayangan_di_daftar_favorit/', delete_tayangan_di_daftar_favorit, name="delete_tayangan_di_daftar_favorit"),
+
+
     # sabina
     path("kontributor/", kontributor, name="kontributor_page"),
     path("kontributor_pemain/", kontributor_pemain, name="kontributor_pemain_page"),
