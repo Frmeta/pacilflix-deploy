@@ -625,6 +625,10 @@ def daftar_favorit(request):
 
 # sabina
 def kontributor(request):
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
+    
     context = {}
     with connection.cursor() as cursor:
         cursor.execute("""SELECT 
@@ -659,6 +663,10 @@ def kontributor(request):
     return render(request, 'kontributor.html', context)
 
 def kontributor_pemain(request):
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
+    
     context = {}
     with connection.cursor() as cursor:
         cursor.execute("""SELECT nama,
@@ -676,6 +684,10 @@ def kontributor_pemain(request):
     return render(request, 'kontributor_pemain.html', context)
 
 def kontributor_sutradara(request):
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
+    
     context = {}
     with connection.cursor() as cursor:
         cursor.execute("""SELECT nama,
@@ -693,6 +705,10 @@ def kontributor_sutradara(request):
     return render(request, 'kontributor_sutradara.html', context)
 
 def kontributor_penulis_skenario(request):
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
+    
     context = {}
     with connection.cursor() as cursor:
         cursor.execute("""SELECT nama,
@@ -710,6 +726,10 @@ def kontributor_penulis_skenario(request):
     return render(request, 'kontributor_penulis_skenario.html', context)
 
 def langganan(request):
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
+    
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT 
@@ -738,7 +758,7 @@ def langganan(request):
                 t.username, p.nama, p.harga, p.resolusi_layar, t.start_date_time, t.end_date_time, t.metode_pembayaran, t.timestamp_pembayaran
             ORDER BY 
                 t.start_date_time DESC;
-        """, ["jackAttack"])
+        """, [username])
         rows = cursor.fetchall()
         
         current_paket = {
@@ -778,6 +798,10 @@ def langganan(request):
     return render(request, 'langganan.html', context)
 
 def update_langganan(request):
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
+    
     context={}
     with connection.cursor() as cursor:
         cursor.execute("""SELECT 
@@ -796,7 +820,7 @@ def update_langganan(request):
         context = {'rows': rows}
 
     if request.method == 'POST':
-        username = 'jackAttack'
+        username = request.COOKIES.get('username', '')
         nama_paket = request.POST['nama_paket']
         metode_pembayaran = request.POST['metode_pembayaran']
 
