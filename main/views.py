@@ -718,7 +718,10 @@ def daftar_favorit(request):
         context = {'daftar_daftar_favorit' : daftar_daftar_favorit}
     return render(request, "daftar_favorit.html", context)
 
-
+def tambah_favorit(request):
+    username = request.COOKIES.get("username")
+    if not username: return HttpResponseBadRequest("Missing 'username' parameter in cookies.")
+    
 
 
 
