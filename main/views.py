@@ -1,5 +1,5 @@
 from django.db import connection
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 def tayangan_guest(request):
     return render(request, "tayangan_guest.html")
@@ -129,17 +129,6 @@ def kontributor_penulis_skenario(request):
 
     return render(request, 'kontributor_penulis_skenario.html', context)
 
-# def langganan(request):
-#     context = {}
-#     with connection.cursor() as cursor:
-#         cursor.execute("""SELECT
-#                        """)
-#         rows = cursor.fetchall()
-#         print(rows)
-#         context = {'rows': rows}
-
-#     return render(request, 'langganan.html', context)
-
 def langganan(request):
     with connection.cursor() as cursor:
         cursor.execute("""
@@ -169,7 +158,7 @@ def langganan(request):
                 t.username, p.nama, p.harga, p.resolusi_layar, t.start_date_time, t.end_date_time, t.metode_pembayaran, t.timestamp_pembayaran
             ORDER BY 
                 t.start_date_time DESC;
-        """, ["jenny98"])
+        """, ["jackAttack"])
         rows = cursor.fetchall()
         
         current_paket = {
@@ -201,7 +190,7 @@ def langganan(request):
                 past_pakets.append(paket)
         
         context = {
-            'username': 'jenny98',
+            'username': 'jackAttack',
             'current_paket': current_paket,
             'past_pakets': past_pakets,
         }
@@ -209,13 +198,35 @@ def langganan(request):
     return render(request, 'langganan.html', context)
 
 def update_langganan(request):
-    context = {}
+    context={}
     with connection.cursor() as cursor:
-        cursor.execute("""SELECT
-                       """)
+        cursor.execute("""SELECT 
+                            p.nama,
+                            p.harga,
+                            p.resolusi_layar,
+                            STRING_AGG(dp.dukungan_perangkat, ', ') AS perangkat
+                        FROM 
+                            paket p
+                        JOIN 
+                            dukungan_perangkat dp ON p.nama = dp.nama_paket
+                        GROUP BY 
+                            p.nama, p.harga, p.resolusi_layar;""")
         rows = cursor.fetchall()
         print(rows)
         context = {'rows': rows}
+
+    if request.method == 'POST':
+        username = 'jackAttack'
+        nama_paket = request.POST['nama_paket']
+        metode_pembayaran = request.POST['metode_pembayaran']
+
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                INSERT INTO transaction (username, nama_paket, start_date_time, end_date_time, metode_pembayaran, timestamp_pembayaran)
+                    VALUES (%s, %s, CURRENT_DATE, CURRENT_DATE + INTERVAL '1 month', %s, CURRENT_TIMESTAMP);
+                """, [username, nama_paket, metode_pembayaran])
+
+        return redirect('/langganan/')
 
     return render(request, 'update_langganan.html', context)
 
