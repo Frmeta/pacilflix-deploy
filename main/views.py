@@ -790,7 +790,7 @@ def langganan(request):
                 past_pakets.append(paket)
         
         context = {
-            'username': 'jackAttack',
+            'username': username,
             'current_paket': current_paket,
             'past_pakets': past_pakets,
         }
