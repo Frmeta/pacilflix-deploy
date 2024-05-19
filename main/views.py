@@ -1,5 +1,6 @@
-from django.db import connection, DatabaseError
+from django.db import connection
 from django.shortcuts import render, redirect
+from django.db import connection, DatabaseError
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -861,27 +862,218 @@ def delete_tayangan_di_daftar_favorit(request):
 
 # sabina
 def kontributor(request):
-    return render(request, "kontributor.html")
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
+    
+    context = {}
+    with connection.cursor() as cursor:
+        cursor.execute("""SELECT 
+                            c.id, c.nama,
+                            CASE
+                            WHEN c.jenis_kelamin = 0 THEN 'M'
+                            WHEN c.jenis_kelamin = 1 THEN 'F'
+                            END AS jenis_kelamin,
+                            STRING_AGG(t.type, ', ') AS types,
+                            c.kewarganegaraan
+                        FROM (
+                            (SELECT c.id, c.nama, c.jenis_kelamin, 'Pemain' AS type, c.kewarganegaraan
+                            FROM contributors c
+                            JOIN pemain w ON c.id = w.id)
+                            UNION
+                            (SELECT c.id, c.nama, c.jenis_kelamin, 'Sutradara' AS type, c.kewarganegaraan
+                            FROM contributors c
+                            JOIN sutradara d ON c.id = d.id)
+                            UNION
+                            (SELECT c.id, c.nama, c.jenis_kelamin, 'Penulis Skenario' AS type, c.kewarganegaraan
+                            FROM contributors c
+                            JOIN penulis_skenario ps ON c.id = ps.id)
+                        ) t
+                        JOIN contributors c ON t.id = c.id
+                        GROUP BY c.id, c.nama
+                        ORDER BY 
+                            c.nama;""")
+        rows = cursor.fetchall()
+        print(rows)
+        context = {'rows': rows}
 
+    return render(request, 'kontributor.html', context)
 
 def kontributor_pemain(request):
-    return render(request, "kontributor_pemain.html")
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
+    
+    context = {}
+    with connection.cursor() as cursor:
+        cursor.execute("""SELECT nama,
+                        CASE
+                        WHEN jenis_kelamin = 0 THEN 'M'
+                        WHEN jenis_kelamin = 1 THEN 'F'
+                        END AS jenis_kelamin,
+                        kewarganegaraan
+                        FROM contributors
+                        NATURAL JOIN pemain;""")
+        rows = cursor.fetchall()
+        print(rows)
+        context = {'rows': rows}
 
+    return render(request, 'kontributor_pemain.html', context)
 
 def kontributor_sutradara(request):
-    return render(request, "kontributor_sutradara.html")
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
+    
+    context = {}
+    with connection.cursor() as cursor:
+        cursor.execute("""SELECT nama,
+                        CASE
+                        WHEN jenis_kelamin = 0 THEN 'M'
+                        WHEN jenis_kelamin = 1 THEN 'F'
+                        END AS jenis_kelamin,
+                        kewarganegaraan
+                        FROM contributors
+                        NATURAL JOIN sutradara;""")
+        rows = cursor.fetchall()
+        print(rows)
+        context = {'rows': rows}
 
+    return render(request, 'kontributor_sutradara.html', context)
 
 def kontributor_penulis_skenario(request):
-    return render(request, "kontributor_penulis_skenario.html")
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
+    
+    context = {}
+    with connection.cursor() as cursor:
+        cursor.execute("""SELECT nama,
+                        CASE
+                        WHEN jenis_kelamin = 0 THEN 'M'
+                        WHEN jenis_kelamin = 1 THEN 'F'
+                        END AS jenis_kelamin,
+                        kewarganegaraan
+                        FROM contributors
+                        NATURAL JOIN penulis_skenario;""")
+        rows = cursor.fetchall()
+        print(rows)
+        context = {'rows': rows}
 
+    return render(request, 'kontributor_penulis_skenario.html', context)
 
 def langganan(request):
-    return render(request, "langganan.html")
-
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
+    
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT 
+                t.username,
+                p.nama,
+                STRING_AGG(pr.dukungan_perangkat, ', ') AS perangkat,
+                p.harga,
+                p.resolusi_layar,
+                t.start_date_time,
+                t.end_date_time,
+                t.metode_pembayaran,
+                t.timestamp_pembayaran,
+                CASE
+                    WHEN CURRENT_DATE BETWEEN t.start_date_time AND t.end_date_time THEN 'current'
+                    ELSE 'past'
+                END AS status
+            FROM
+                transaction t
+            JOIN 
+                paket p ON t.nama_paket = p.nama
+            JOIN 
+                dukungan_perangkat pr ON p.nama = pr.nama_paket
+            WHERE 
+                t.username = %s
+            GROUP BY 
+                t.username, p.nama, p.harga, p.resolusi_layar, t.start_date_time, t.end_date_time, t.metode_pembayaran, t.timestamp_pembayaran
+            ORDER BY 
+                t.start_date_time DESC;
+        """, [username])
+        rows = cursor.fetchall()
+        
+        current_paket = {
+            'nama': '-',
+            'perangkat': '-',
+            'harga': '-',
+            'resolusi_layar': '-',
+            'start_date_time': '-',
+            'end_date_time': '-',
+            'metode_pembayaran': '-',
+            'timestamp_pembayaran': '-',
+        }
+        past_pakets = []
+        
+        for row in rows:
+            paket = {
+                'nama': row[1],
+                'perangkat': row[2],
+                'harga': row[3],
+                'resolusi_layar': row[4],
+                'start_date_time': row[5],
+                'end_date_time': row[6],
+                'metode_pembayaran': row[7],
+                'timestamp_pembayaran': row[8],
+            }
+            if row[9] == 'current':
+                current_paket = paket
+            else:
+                past_pakets.append(paket)
+        
+        context = {
+            'username': username,
+            'current_paket': current_paket,
+            'past_pakets': past_pakets,
+        }
+    
+    return render(request, 'langganan.html', context)
 
 def update_langganan(request):
-    return render(request, "update_langganan.html")
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
+    
+    context={}
+    with connection.cursor() as cursor:
+        cursor.execute("""SELECT 
+                            p.nama,
+                            p.harga,
+                            p.resolusi_layar,
+                            STRING_AGG(dp.dukungan_perangkat, ', ') AS perangkat
+                        FROM 
+                            paket p
+                        JOIN 
+                            dukungan_perangkat dp ON p.nama = dp.nama_paket
+                        GROUP BY 
+                            p.nama, p.harga, p.resolusi_layar;""")
+        rows = cursor.fetchall()
+        print(rows)
+        context = {'rows': rows}
+
+    if request.method == 'POST':
+        username = request.COOKIES.get('username', '')
+        nama_paket = request.POST['nama_paket']
+        metode_pembayaran = request.POST['metode_pembayaran']
+
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                INSERT INTO transaction (username, nama_paket, start_date_time, end_date_time, metode_pembayaran, timestamp_pembayaran)
+                    VALUES (%s, %s, CURRENT_DATE, CURRENT_DATE + INTERVAL '1 month', %s, CURRENT_TIMESTAMP);
+                """, [username, nama_paket, metode_pembayaran])
+
+        return redirect('/langganan/')
+
+    return render(request, 'update_langganan.html', context)
+
+# ariana
+def login(request):
+    return render(request, "login.html")
 
 
 def main(request):

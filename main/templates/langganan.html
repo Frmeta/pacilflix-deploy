@@ -118,7 +118,7 @@
     }
 
     th:first-child, td:first-child {
-        width: 16%;
+        width: 13%;
     }
 
     th:nth-child(2), td:nth-child(2) {
@@ -130,7 +130,7 @@
     }
 
     th:nth-child(4), td:nth-child(4) {
-        width: 16%;
+        width: 19%;
     }
 
     th:nth-child(5), td:nth-child(5) {
@@ -148,27 +148,27 @@
 <div class="flex-container">
     <div class="container1">
         <b>Username</b>
-        <p>jenny98</p>
+        <p>{{username}}</p>
     </div>
     <div class="container2">
         <b>Nama Paket</b>
-        <p>Basic</p>
+        <p>{{current_paket.nama}}</p>
         <b>Dukungan Perangkat</b>
-        <p>Smartphone, tablet, laptop</p>
+        <p>{{current_paket.perangkat}}</p>
         <b>Harga</b>
-        <p>Rp 50.000</p>
+        <p>{{current_paket.harga}}</p>
         <b>Resolusi Layar</b>
-        <p>HD</p>
+        <p>{{current_paket.resolusi_layar}}</p>
     </div>
     <div class="container3">
         <b>Awal Penggunaan Paket</b>
-        <p>12/12/2021</p>
+        <p>{{current_paket.start_date_time}}</p>
         <b>Akhir Penggunaan Paket</b>
-        <p>12/01/2022</p>
+        <p>{{current_paket.end_date_time}}</p>
         <b>Metode Pembayaran</b>
-        <p>Transfer bank</p>
+        <p>{{current_paket.metode_pembayaran}}</p>
         <b>Tanggal Pembayaran</b>
-        <p>12/10/2021</p>
+        <p>{{current_paket.timestamp_pembayaran}}</p>
     </div>
 </div>
 
@@ -189,23 +189,21 @@
             <th>Tanggal Pembayaran</th>
             <th>Total Pembayaran</th>
         </tr>
+
+        {% if past_pakets %}
+        {% for paket in past_pakets %}
         <tr>
-            <td>Basic</td>
-            <td>12/12/2021</td>
-            <td>12/01/2022</td>
-            <td>Transfer Bank</td>
-            <td>05-01-2024 14:23:01</td>
-            <td>Rp 50.000</td>
+            <td>{{paket.nama}}</td>
+            <td>{{paket.start_date_time}}</td>
+            <td>{{paket.end_date_time}}</td>
+            <td>{{paket.metode_pembayaran}}</td>
+            <td>{{paket.timestamp_pembayaran}}</td>
+            <td>Rp {{paket.harga}}</td>
         </tr>
-        <tr>
-            <td>Standard</td>
-            <td>4/1/2018</td>
-            <td>5/1/2018</td>
-            <td>E-wallet</td>
-            <td>09-03-2024 5:39:21</td>
-            <td>Rp 100.000</td>
-        </tr>
+        {% endfor %}
+        {% endif %}
     </table>
 </div>
 
+<br>
 {% endblock content %}

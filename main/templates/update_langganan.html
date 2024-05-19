@@ -128,32 +128,35 @@
 
 <h1>Ubah Paket Langganan</h1>
 
+<form method="POST" action="{% url 'update_langganan_page' %}">
+    {% csrf_token %}
+
 <div class="flex-container">
     <div class="container1">
-        <input type="radio" id="option1" name="option-paket" value="basic">
+        <input type="radio" id="option1" name="nama_paket" value="Basic">
         <label for="option1">
-            <b>Basic</b> <br><br>
-            Rp 50.000 <br><br>
-            HD <br><br>
-            Smartphone, tablet
+            <b>{{rows.0.0}}</b> <br><br>
+            Rp {{rows.0.1}} <br><br>
+            {{rows.0.2}} <br><br>
+            {{rows.0.3}}
         </label><br>
     </div>
     <div class="container2">
-        <input type="radio" id="option2" name="option-paket" value="standard">
+        <input type="radio" id="option2" name="nama_paket" value="Standard">
         <label for="option2">
-            <b>Standard</b> <br><br>
-            Rp 100.000 <br><br>
-            Full HD <br><br>
-            Smartphone, tablet, laptop
+            <b>{{rows.1.0}}</b> <br><br>
+            Rp {{rows.1.1}} <br><br>
+            {{rows.1.2}} <br><br>
+            {{rows.1.3}}
         </label><br>
     </div>
     <div class="container3">
-        <input type="radio" id="option3" name="option-paket" value="premium">
+        <input type="radio" id="option3" name="nama_paket" value="Premium">
         <label for="option3">
-            <b>Premium</b> <br><br>
-            Rp 150.000 <br><br>
-            Ultra HD <br><br>
-            Smartphone, tablet, laptop, Smart TV
+            <b>{{rows.2.0}}</b> <br><br>
+            Rp {{rows.2.1}} <br><br>
+            {{rows.2.2}} <br><br>
+            {{rows.2.3}}
         </label><br>
     </div>
 </div>
@@ -172,12 +175,21 @@
 </div>
 
 <script>
+    // function selectOption(option) {
+    //     document.querySelector('.dropdown-button').textContent = option;
+    // }
+
     function selectOption(option) {
         document.querySelector('.dropdown-button').textContent = option;
+        document.querySelector('input[name="metode_pembayaran"]').value = option;
     }
 </script>
 
+<input type="hidden" name="metode_pembayaran" value="">
+
 <div class="button-container">
-    <a href="/langganan/" class="button-primary-blue">Ubah Paket</a>
+    <button class="button-primary-blue" type="submit">Ubah Paket</button>
 </div>
+
+</form>
 {% endblock content %}
