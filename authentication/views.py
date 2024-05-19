@@ -45,7 +45,7 @@ def register(request):
                 return render(
                     request,
                     "register.html",
-                    {"error_message": "username sudah terdaftar!"},
+                    {"error_message": "Username telah digunakan!"},
                 )
     return render(request, "register.html")
 
