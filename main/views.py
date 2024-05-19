@@ -691,7 +691,6 @@ def hapus_unduhan(request):
 def daftar_favorit(request):
     return render(request, "daftar_favorit.html")
 
-@csrf_exempt
 def bikin_daftar_favorit(request):
     if request.method == 'POST':
         judul = request.POST.get('judul')
@@ -726,6 +725,26 @@ def get_daftar_favorit(request):
             output.append({'timestamp':row[0].strftime("%Y-%m-%d %H:%M:%S.%f"), 'username':row[1], 'judul':row[2]})
         return JsonResponse(output, safe=False)
 
+def delete_daftar_favorit(request):
+    if request.method == 'POST':
+        username = request.COOKIES.get("username")
+        if not username: return HttpResponseBadRequest("Missing 'username' parameter in cookies.")
+        timestamp = request.POST.get("timestamp")
+        
+
+        with connection.cursor() as cursor:
+            try:
+                cursor.execute("delete from daftar_favorit where timestamp=%s and username=%s;", [timestamp, username])
+                connection.commit()
+            except Exception as e:
+                return HttpResponseBadRequest("NOT OK")
+
+            return JsonResponse({'status' : 'success'})
+
+
+    # If the request method is not POST, redirect to some view
+    return HttpResponseBadRequest("Bad Request")
+
 def tambah_favorit(request):
     if request.method == 'POST':
         username = request.COOKIES.get("username")
@@ -751,11 +770,29 @@ def tambah_favorit(request):
     # If the request method is not POST, redirect to some view
     return HttpResponseBadRequest("Bad Request")
 
-def detail_daftar_favorit(request):
-    # TODO
-    pass
+def detail_daftar_favorit(request, timestamp):
+    context = {"timestamp" : timestamp}
+    return render(request, "detail_daftar_favorit.html", context)
 
+def get_detail_daftar_favorit(request):
+    username = request.COOKIES.get("username")
+    if not username: return HttpResponseBadRequest("Missing 'username' parameter in cookies.")
 
+    timestamp = request.GET.get("timestamp")
+
+    with connection.cursor() as cursor:
+        cursor.execute("""SELECT df.timestamp, df.username, t.judul
+                        FROM tayangan_memiliki_daftar_favorit tmdf
+                        JOIN daftar_favorit df ON tmdf.username=df.username and tmdf.timestamp=df.timestamp 
+                        JOIN tayangan t on t.id=id_tayangan
+                        WHERE df.username=%s and df.timestamp=%s;""", [username, timestamp])
+        connection.commit()
+        rows = cursor.fetchall()
+        
+        output = []
+        for row in rows:
+            output.append({'timestamp':row[0].strftime("%Y-%m-%d %H:%M:%S.%f"), 'username':row[1], 'judul':row[2]})
+        return JsonResponse(output, safe=False)
 
 # sabina
 def kontributor(request):

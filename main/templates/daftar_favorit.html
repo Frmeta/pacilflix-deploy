@@ -14,16 +14,7 @@
             </div>
 
             <div id="daftar_favorit" class="grid grid-cols-3 gap-y-0">
-                
-                {% for tayangan in daftar_favorit.2 %}
-                <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">{{ tayangan.0 }}</p>
-                <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white text-justify">{{ tayangan.1 }}</p>
-                <div class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">
-                    <button class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-red-500 font-bold rounded-full transition-all hover:bg-red-700">
-                        Hapus
-                    </button>
-                </div>
-                {% endfor %}
+                <!--Nanti akan digenerate oleh AJAX-->
             </div>
 
         <!-- Add new button here -->
@@ -71,7 +62,10 @@
 
 <script>
     $(document).ready(function() {
+        refresh()
+    })
 
+    function refresh(){
         $.ajax({
             method: "GET",
             url: "{% url 'get_daftar_favorit' %}",
@@ -85,18 +79,19 @@
                 console.log("failed adding to download list" + result.responseText)
             }
         });
-    })
+    }
 
     function process(result){
         isinya = ""
         $.each(result, function(index, item) {
             isinya += 
-                "<p class=\"font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white\">"
+                `<p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">
+                    <a href="{% url 'detail_daftar_favorit' %}` + item.timestamp + `">`
                 + item.judul
-                + `</p>
+                + `</a></p>
                     <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white text-justify">` + item.timestamp + `</p>
                     <div class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">
-                        <button class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-red-500 font-bold rounded-full transition-all hover:bg-red-700">
+                        <button onclick="hapus('` + item.timestamp + `')" class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-red-500 font-bold rounded-full transition-all hover:bg-red-700">
                             Hapus
                         </button>
                     </div>
@@ -111,6 +106,24 @@
 
     function closeBikinDaftarFavoritModal() {
         document.getElementById('bikinDaftarFavoritModal').style.display = 'none';
+    }
+
+    function hapus(timestampnya){
+        console.log("hapus")
+        $.ajax({
+            method: "POST",
+            url: "{% url 'delete_daftar_favorit' %}",
+            data: {
+                timestamp: timestampnya,
+            },
+            success: function( result ) {
+                console.log("success deleting")
+                refresh()
+            },
+            error: function( result ) {
+                console.log("failed delete daftar favorit" + result.responseText)
+            }
+        });
     }
 </script>
 
