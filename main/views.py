@@ -657,9 +657,14 @@ def unduh(request):
         
         with connection.cursor() as cursor:
             now = datetime.now()
-            rows_affected = cursor.execute("insert into tayangan_terunduh values (%s, %s, %s);", [tayangan_id, username, datetime.now()])
+            cursor.execute("insert into tayangan_terunduh values (%s, %s, %s);", [tayangan_id, username, datetime.now()])
+            
+        with connection.cursor() as cursor:
+            cursor.execute("select judul from tayangan where id=%s", [tayangan_id])
             connection.commit()
-            return JsonResponse({'valid_till' : (now + timedelta(hours=24)).isoformat()})
+            rows = cursor.fetchall()
+            return JsonResponse({'valid_till' : (now + timedelta(hours=24*7)).strftime('%Y-%m-%d %H:%M:%S'),
+                                 'judul_tayangan': rows[0][0]})
 
     return HttpResponseBadRequest("Bad Request")
 
