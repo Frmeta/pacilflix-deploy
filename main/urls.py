@@ -7,24 +7,28 @@ urlpatterns = [
     path('hasil_pencarian_guest/', hasil_pencarian_guest, name='hasil_pencarian_guest_page'),
     path('tayangan_aktif/', tayangan_aktif, name='tayangan_aktif_page'),
     path('hasil_pencarian_aktif/', hasil_pencarian_aktif, name='hasil_pencarian_aktif_page'),
-    path('film/', hal_film_page, name='hal_film_page'),
-    path('series/', hal_series_page, name='hal_series_page'),
-    path('episode/', hal_episode_page, name='hal_episode_page'),
+    path('detail/<str:id>/', detail_page, name='detail_page'),
+    path('episode/<str:title>/<str:id>/', episode_page, name='episode_page'),
+    path('watch/<str:id>/', watch, name='watch'),
+    path('review/<str:id>/', review, name='review'),
 
     # fredo
-    path('daftar_unduhan/', daftar_unduhan, name='daftar_unduhan'),
-    path('daftar_favorit/', daftar_favorit, name='daftar_favorit'),
-
-    # sabina
-    path('kontributor/', kontributor, name='kontributor_page'),
-    path('kontributor_pemain/', kontributor_pemain, name='kontributor_pemain_page'),
-    path('kontributor_sutradara/', kontributor_sutradara, name='kontributor_sutradara_page'),
-    path('kontributor_penulis_skenario/', kontributor_penulis_skenario, name='kontributor_penulis_skenario_page'),
-    path('langganan/', langganan, name='langganan_page'),
-    path('update_langganan/', update_langganan, name='update_langganan_page'),
+    path("daftar_unduhan/", daftar_unduhan, name="daftar_unduhan"),
+    path("daftar_favorit/", daftar_favorit, name="daftar_favorit"),
     
-    # ariana
-    path('', home, name='home'),
-    path('login/', login, name='login'),
-    path('profile/', profile, name='profile'),
+    # sabina
+    path("kontributor/", kontributor, name="kontributor_page"),
+    path("kontributor_pemain/", kontributor_pemain, name="kontributor_pemain_page"),
+    path(
+        "kontributor_sutradara/",
+        kontributor_sutradara,
+        name="kontributor_sutradara_page",
+    ),
+    path(
+        "kontributor_penulis_skenario/",
+        kontributor_penulis_skenario,
+        name="kontributor_penulis_skenario_page",
+    ),
+    path("langganan/", langganan, name="langganan_page"),
+    path("update_langganan/", update_langganan, name="update_langganan_page"),
 ]
