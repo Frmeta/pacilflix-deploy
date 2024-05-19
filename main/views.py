@@ -1,8 +1,7 @@
 from django.db import connection
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import JsonResponse
 import json
-from django.contrib.auth.decorators import login_required
 
 def tayangan_guest(request):
     # asumsi menampilkan 10 film dan 10 series
@@ -132,8 +131,10 @@ def hasil_pencarian_guest(request):
         else:
             return render(request, "hasil_pencarian_guest.html")
 
-# @login_required(login_url='/login')
 def tayangan_aktif(request):
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
     with connection.cursor() as cursor:
         # TOP 10 TAYANGAN GLOBAL
         cursor.execute("""
@@ -235,6 +236,9 @@ def tayangan_aktif(request):
         })
 
 def hasil_pencarian_aktif(request):
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
     with connection.cursor() as cursor:
         if request.method == 'POST':
             search_text = request.POST.get('search', '')
@@ -269,6 +273,9 @@ def hasil_pencarian_aktif(request):
             return render(request, "hasil_pencarian_aktif.html")
 
 def detail_page(request, id):
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
     is_film = False
     with connection.cursor() as cursor:
         cursor.execute("""
@@ -526,6 +533,9 @@ def detail_page(request, id):
             })
         
 def episode_page(request, title, id):
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT
@@ -585,9 +595,9 @@ def watch(request, id):
     sedangkan jika < 70% maka tidak akan disimpan
     sehingga views yang ditampilkan (yang diambil dari riwayat_nonton) dipastikan >= 70%
     ''' 
-    username = request.user.username
-    if not username:
-        username = 'jenny98' # dummy username
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
     if request.method == 'GET':
         with connection.cursor() as cursor:
             cursor.execute("""
@@ -597,9 +607,9 @@ def watch(request, id):
         return JsonResponse({'status': 'success'})
 
 def review(request, id):
-    username = request.user.username
-    if not username:
-        username = 'jenny98' # dummy username
+    username = request.COOKIES.get('username', '')
+    if username == '':
+        return redirect('/login/')
     if request.method == 'POST':
         with connection.cursor() as cursor:
             data = json.loads(request.body)
