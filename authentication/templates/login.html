@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% include 'navbar_guest.html' %}
+  <section>
+    <div class="overflow-hidden">
+      <img class="absolute inset-0 h-full w-full object-cover" src="https://assets.nflxext.com/ffe/siteui/vlv3/058eee37-6c24-403a-95bd-7d85d3260ae1/c9d61b69-0537-469e-9596-74e5f8d3f1c7/ID-en-20240422-POP_SIGNUP_TWO_WEEKS-perspective_WEB_705f4927-4856-4ccc-b8e7-ac91621eda12_small.jpg" alt="hero bg image">
+      <div class="absolute inset-0 bg-gradient-to-r from-[#1e2026] to-[#000000] opacity-90"></div>
+    </div>
+
+    <div class="container mx-auto h-dvh flex justify-center items-center">
+      <div class="relative text-white rounded-xl w-3/4 m-2">
+        <div class="grid w-full h-[70vh] gap-y-2 place-content-center text-center">
+          <h2 class="text-lg">Siap untuk menonton?</h2>
+          <h3 class="text-lg">Masuk ke aplikasi sekarang</h3>
+
+          <div class="flex justify-center items-center">
+            <div class="w-[45vh] h-[45vh] bg-[#1e2026] bg-gradient-to-r from-[#1e2026] to-[#000000] opacity-90 py-10 rounded-xl">
+              <h1 class="text-white font-bold text-2xl mb-4" style="color: red;">Login Form</h1>
+              {% if error %}
+              <div class="alert alert-danger mb-4" role="alert" style="background-color: #ffcccc; color: #cc0000; padding: 10px; border: 1px solid #cc0000; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+                <strong>{{ error }}</strong>
+              </div>
+              {% endif %}
+              <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label for="username" class="form-label">Username</label>
+                  <input type="text" class="form-control" id="username" name="username" required style="color: black;">
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="password" name="password" required style="color: black;">
+                </div>
+                <div class="login-button">
+                  <button class="px-4 py-2 mr-2 mt-2 bg-[#b91c1c] text-white font-bold rounded-md hover:bg-[#7f1d1d]">Login</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="mt-4">
+            <a href="/register" class="text-center" style="color: red;">Belum punya akun? Daftar di sini.</a>
+          </div>
+          <div class="mt-4">
+            <a href="/" class="text-center">Back to Home</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}

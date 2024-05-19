@@ -84,7 +84,7 @@
                         document.getElementById('unduhModal').style.display = 'block'
                     },
                     error: function( result ) {
-                        console.log("failed adding to download list")
+                        console.log("failed adding to download list" + result.responseText)
                     }
                 });
             }
