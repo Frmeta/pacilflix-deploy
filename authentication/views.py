@@ -12,7 +12,12 @@ class LoggedInUser:
     username = ""
 
 
-def register_page(request):
+def show_main(request):
+    context = {}
+    return render(request, "main.html", context)
+
+
+def show_register(request):
     return render(request, "register.html")
 
 
@@ -23,7 +28,9 @@ def register(request):
         password = request.POST.get("password")
         negara = request.POST.get("negara")
         with connection.cursor() as cursor:
-            cursor.execute("SELECT COUNT(*) FROM pengguna WHERE username = %s", [username])
+            cursor.execute(
+                "SELECT COUNT(*) FROM pengguna WHERE username = %s", [username]
+            )
             count = cursor.fetchone()[0]
             if count == 0:
                 cursor.execute(
@@ -33,9 +40,13 @@ def register(request):
                 """,
                     (username, password, negara),
                 )
-                return redirect("/tayangan_aktif/")
+                return redirect("/tayangan_aktif")
             else:
-                return render(request, "register.html", {"error_message": "username sudah terdaftar!"})
+                return render(
+                    request,
+                    "register.html",
+                    {"error_message": "username sudah terdaftar!"},
+                )
     return render(request, "register.html")
 
 
@@ -76,8 +87,3 @@ def logout_user(request):
     response.delete_cookie("is_authenticated")
     LoggedInUser.username = ""
     return response
-
-
-def show_main(request):
-    context = {}
-    return render(request, "blankRegist.html", context)

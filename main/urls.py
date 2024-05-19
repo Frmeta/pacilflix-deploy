@@ -15,6 +15,7 @@ urlpatterns = [
     # fredo
     path("daftar_unduhan/", daftar_unduhan, name="daftar_unduhan"),
     path("daftar_favorit/", daftar_favorit, name="daftar_favorit"),
+    
     # sabina
     path("kontributor/", kontributor, name="kontributor_page"),
     path("kontributor_pemain/", kontributor_pemain, name="kontributor_pemain_page"),
@@ -30,9 +31,4 @@ urlpatterns = [
     ),
     path("langganan/", langganan, name="langganan_page"),
     path("update_langganan/", update_langganan, name="update_langganan_page"),
-    
-    # ariana
-    # path("", main, name="main"),
-    # path('login/', login, name='login'),
-    # path('profile/', profile, name='profile'),
 ]

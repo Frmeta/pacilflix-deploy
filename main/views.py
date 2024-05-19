@@ -647,14 +647,5 @@ def update_langganan(request):
     return render(request, "update_langganan.html")
 
 
-# # ariana
-# def login(request):
-#     return render(request, "login.html")
-
-
 def main(request):
     return render(request, "main.html")
-
-
-def profile(request):
-    return render(request, "profile.html")
