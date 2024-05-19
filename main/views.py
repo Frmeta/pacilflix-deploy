@@ -227,12 +227,24 @@ def tayangan_aktif(request):
                 'release_date' : row[3],
                 'id' : row[4]
             })
+        
+        paket_aktif = False
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM TRANSACTION
+            WHERE username = %s
+            AND end_date_time > NOW()
+        """, [username])
+        result = cursor.fetchone()
+        if result[0] > 0:
+            paket_aktif = True
 
         # RETURN SEMUA DATA
         return render(request, "tayangan_aktif.html", {
             'daftar1': list_tayangan_global,
             'daftar2': list_film_global,
             'daftar3': list_series_global,
+            'paket_aktif' : paket_aktif
         })
 
 def hasil_pencarian_aktif(request):
@@ -265,9 +277,21 @@ def hasil_pencarian_aktif(request):
                     'release_date' : row[3],
                     'id' : row[4]
                 })
+            
+            paket_aktif = False
+            cursor.execute("""
+                SELECT COUNT(*)
+                FROM TRANSACTION
+                WHERE username = %s
+                AND end_date_time > NOW()
+            """, [username])
+            result = cursor.fetchone()
+            if result[0] > 0:
+                paket_aktif = True
 
             return render(request, "hasil_pencarian_aktif.html", {
                 'daftar': list_hasil_pencarian,
+                'paket_aktif' : paket_aktif
             })
         else:
             return render(request, "hasil_pencarian_aktif.html")
