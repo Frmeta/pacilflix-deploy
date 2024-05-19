@@ -689,38 +689,7 @@ def hapus_unduhan(request):
 
 #@login_required
 def daftar_favorit(request):
-    username = request.COOKIES.get("username")
-    if not username:
-        return HttpResponseBadRequest("Missing 'username' parameter in cookies.")
-    
-    context = {}
-    with connection.cursor() as cursor:
-        cursor.execute("""
-            select df.judul, df.timestamp, ARRAY_AGG(t.judul) as tayangan_list, ARRAY_AGG(tmdf.timestamp) as tayangan_timestamp_list
-            from tayangan t join tayangan_memiliki_daftar_favorit as tmdf on t.id=tmdf.id_tayangan
-            right outer join daftar_favorit as df on tmdf.username=df.username and tmdf.timestamp=tmdf.timestamp
-            group by (df.username, df.timestamp)
-            having df.username=%s;""", [username])
-        connection.commit()
-        rows = cursor.fetchall()
-        print(rows)
-
-        daftar_daftar_favorit = []
-        for row in rows:
-            part1 = row[0]
-            part2 = row[1]
-            part3 = []
-            if len(row[2])==1 and row[2][0] == None:
-                pass
-            else:
-                for i in range(len(row[2])):
-                    part3.append((row[2][i], row[3][i]))
-            daftar_favorit = (part1, part2, part3)
-            daftar_daftar_favorit.append(daftar_favorit)
-            print(daftar_favorit)
-            
-        context = {'daftar_daftar_favorit' : daftar_daftar_favorit}
-    return render(request, "daftar_favorit.html", context)
+    return render(request, "daftar_favorit.html")
 
 @csrf_exempt
 def bikin_daftar_favorit(request):
