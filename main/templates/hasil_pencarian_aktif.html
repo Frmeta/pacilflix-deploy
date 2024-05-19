@@ -36,9 +36,13 @@
                     <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white text-justify">{{ row.sinopsis }}</p>
                     <a href="https://www.youtube.com/watch?v={{ row.hrefurl }}" target="_blank" class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white break-all text-[#7dd3fc]">https://www.youtube.com/watch?v={{ row.hrefurl }}</a>
                     <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">{{ row.release_date }}</p>
+                    {% if paket_aktif %}
                     <div class="flex justify-center items-center border-y-2">
                         <a href="{% url 'detail_page' row.id %}" class="border-2 px-4 py-2 flex items-center justify-center border-[#b91c1c] text-white font-bold rounded-md transition-all hover:cursor-pointer hover:bg-[#b91c1c] mb-2 px-2 py-2 active:bg-[#b91c1c]">Detail</a>
-                    </div> 
+                    </div>
+                    {% else %}
+                        <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">Subscribe for full access</p>
+                    {% endif %}
                 {% endfor %}
             </div>
         {% else %}
