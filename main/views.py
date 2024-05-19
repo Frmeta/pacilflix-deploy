@@ -754,12 +754,33 @@ def get_daftar_favorit(request):
         
         output = []
         for row in rows:
-            output.append({'timestamp':row[0], 'username':row[1], 'judul':row[2]})
+            output.append({'timestamp':row[0].strftime("%Y-%m-%d %H:%M:%S.%f"), 'username':row[1], 'judul':row[2]})
         return JsonResponse(output, safe=False)
 
 def tambah_favorit(request):
-    username = request.COOKIES.get("username")
-    if not username: return HttpResponseBadRequest("Missing 'username' parameter in cookies.")
+    if request.method == 'POST':
+        username = request.COOKIES.get("username")
+        if not username: return HttpResponseBadRequest("Missing 'username' parameter in cookies.")
+
+        favorit = request.POST.get('favorit')
+        favorit = favorit.split('woi')
+        print(favorit)
+        
+        timestamp = favorit[0]
+        id_tayangan = favorit[1]
+
+        with connection.cursor() as cursor:
+            try:
+                cursor.execute("insert into tayangan_memiliki_daftar_favorit (id_tayangan, timestamp, username) values (%s, %s, %s);", [id_tayangan, timestamp, username])
+                connection.commit()
+            except Exception as e:
+                return JsonResponse({'status' : 'failed', 'message' : str(e)})
+
+            return JsonResponse({'status' : 'success'})
+
+
+    # If the request method is not POST, redirect to some view
+    return HttpResponseBadRequest("Bad Request")
 
 def detail_daftar_favorit(request):
     # TODO

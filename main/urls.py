@@ -13,10 +13,12 @@ urlpatterns = [
     path('review/<str:id>/', review, name='review'),
 
     # fredo
+    # unduh
     path('daftar_unduhan/', daftar_unduhan, name='daftar_unduhan'),
     path('unduh/', unduh, name='unduh'),
     path('hapus_unduhan/', hapus_unduhan, name='hapus_unduhan'),
     
+    # favorit
     path('daftar_favorit/', daftar_favorit, name='daftar_favorit'),
     path("bikin_daftar_favorit", bikin_daftar_favorit, name='bikin_daftar_favorit'),
     path("get_daftar_favorit/", get_daftar_favorit, name="get_daftar_favorit"),
