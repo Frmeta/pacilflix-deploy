@@ -27,7 +27,7 @@
             {% if row.url_video_film != "unreleased" %}
                 <button class="px-4 py-2 mr-2 mt-2 bg-[#b91c1c] text-white font-bold rounded-full hover:bg-[#7f1d1d]" onclick="submitWatch('{{ row.id }}')">Watch</button>
             {% endif %}
-                <button onclick="openUnduhModal()" class="px-4 py-2 mr-2 mt-2 bg-[#b91c1c] text-white font-bold rounded-full transition-all hover:bg-[#7f1d1d]">Download</button>
+                <button onclick="openUnduhModal('{{ id }}')" class="px-4 py-2 mr-2 mt-2 bg-[#b91c1c] text-white font-bold rounded-full transition-all hover:bg-[#7f1d1d]">Download</button>
                 <button onclick="openFavoritModal()" class="px-4 py-2 mt-2 bg-[#b91c1c] text-white font-bold rounded-full transition-all hover:bg-[#7f1d1d]">Add to Favorites</button>
             </div> 
 
@@ -115,6 +115,7 @@
                 }).then(response => {
                     if (response.ok) {
                         location.reload()
+                        alert("View saved");
                     } else {
                         alert("View doesn't count");
                     }

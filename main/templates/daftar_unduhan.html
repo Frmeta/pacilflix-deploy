@@ -4,41 +4,103 @@
 {% include 'navbar_aktif.html' %}
 <div class="flex items-center justify-center pb-24">
     <div class="text-white rounded-xl w-3/4 m-2">
-        <p class="flex justify-center text-4xl mt-24 mb-5 w-full text-white font-bold leading-tight text-center">Daftar Unduhan</p>
+        <p class="flex justify-center text-4xl mt-24 mb-5 w-full text-white font-bold leading-tight text-center">Downloads</p>
     
         <div class="grid grid-cols-3 gap-y-0 mt-6">
-            <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Judul</p>
-            <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Waktu Diunduh</p>
-            <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Aksi</p>
+            <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Title</p>
+            <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Timestamp</p>
+            <p class="font-bold text-md p-2 text-center flex items-center justify-center border-y-2 border-white">Delete</p>
         </div>
         <div class="grid grid-cols-3 gap-y-0">
-            
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">Madame Web</p>
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white text-justify">2022-03-01T12:34:56Z</p>
-            <div class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">
-                <button class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-red-500 font-bold rounded-full transition-all hover:bg-red-700">
-                    Hapus
-                </button>
-            </div>
-
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">Madame Web</p>
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white text-justify">2022-03-01T12:34:56Z</p>
-            <div class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">
-                <button class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-red-500 font-bold rounded-full transition-all hover:bg-red-700">
-                    Hapus
-                </button>
-            </div>
-
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">Madame Web</p>
-            <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white text-justify">2022-03-01T12:34:56Z</p>
-            <div class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">
-                <button class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-red-500 font-bold rounded-full transition-all hover:bg-red-700">
-                    Hapus
-                </button>
-            </div>
+            {% for row in rows %}
+                <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">{{ row.0 }}</p>
+                <p class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white text-justify">{{ row.1 }}</p>
+                <div class="font-normal text-sm p-2 text-center flex items-center justify-center border-y-2 border-white">
+                    <button onclick="hapus_unduhan('{{ row.2 }}', '{{ row.1 }}')" class="inline-flex items-center py-2.5 px-6 text-medium font-normal text-center text-white bg-red-500 font-bold rounded-full transition-all hover:bg-red-700">
+                        Delete
+                    </button>
+                </div>
+            {% endfor %}
             
             
         </div>
     </div>
 </div>
+
+
+<!-- Modal untuk gagal hapus tayangan -->
+<div id="gagalDeleteUnduhModal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div class="fixed inset-0 bg-black bg-opacity-75 transition-opacity" aria-hidden="true" onclick="closeGagalDeleteUnduhModal()"></div>
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+    <div class="inline-block align-bottom bg-black rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border-2 border-white">
+        <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <div class="sm:flex sm:items-start">
+            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+            <h3 class="mb-6 text-lg leading-6 font-medium text-white" id="modal-title">
+                FAILED DELETING THE SHOW FROM YOUR DOWNLOAD LIST
+            </h3>
+            <div class="mt-2">
+                <p class="text-sm">
+                    Shows must must be on the download list for at least 1 day before they can be deleted.
+                </p>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="bg-black px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+
+        <button onclick="closeGagalDeleteUnduhModal()" type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+            Close Modal
+        </button>
+        
+        </div>
+    </div>
+    </div>
+</div>
+
+
+<script>
+
+    function hapus_unduhan(tayangan_id, timestampnya) {
+        console.log("tayangan id " + tayangan_id + " dengan timestamp " + timestampnya + " akan dihapus dari unduhan")
+
+        $.ajax({
+            method: "POST",
+            url: "{% url 'hapus_unduhan' %}",
+            data: {
+                id : tayangan_id,
+                timestamp : timestampnya
+            },
+            success: function( result ) {
+                if (result.status == "success"){
+                    console.log("success deleting tayangan from download list")
+                    window.location.reload()
+
+
+                } else if (result.status = 'failed'){
+                    <!-- show modal fail -->
+                    openGagalDeleteUnduhModal()
+                } else{
+                    console.log("huh??")
+                }
+            },
+            error: function( result ) {
+                console.log("failed adding to download list" + result.responseText)
+                
+            }
+        });
+    }
+
+
+
+    function openGagalDeleteUnduhModal(){
+        document.getElementById('gagalDeleteUnduhModal').style.display = 'block';
+    }
+    function closeGagalDeleteUnduhModal(){
+        document.getElementById('gagalDeleteUnduhModal').style.display = 'none';
+    }
+
+</script>
+
 {% endblock content %}
